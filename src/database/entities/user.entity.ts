@@ -3,10 +3,12 @@ import {
   Column,
   Entity,
   CreateDateColumn,
-  ManyToOne
+  ManyToOne,
+  Unique
 } from 'typeorm';
 import { Account } from './account.entity';
 
+@Unique(["account", "email"])
 @Entity()
 export class User {
   @PrimaryGeneratedColumn("uuid")
@@ -21,17 +23,17 @@ export class User {
   @Column()
   hashedPassword: string;
 
-  @Column()
+  @Column({ nullable: true })
   firstName: string;
 
-  @Column()
+  @Column({ nullable: true })
   lastName: string;
 
-  @Column()
+  @Column({ nullable: true })
   gender: string;
 
-  @Column({ type: 'timestamptz' })
-  birthDay: Date;
+  @Column({ nullable: true })
+  birthYear: number;
 
   @CreateDateColumn({ type: 'timestamptz' })
   readonly createdAt: Date;

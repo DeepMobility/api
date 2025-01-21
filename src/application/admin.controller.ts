@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, HttpCode, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Public, Admin } from './auth.decorator';
 import { LoginUsecase } from '../domain/admin/login.usecase';
 import { GetAllAccountsUsecase } from '../domain/admin/getAllAccounts.usecase';
@@ -13,7 +13,6 @@ export class AdminController {
   ) {}
 
   @Public()
-  @HttpCode(HttpStatus.OK)
   @Post('login')
   login(@Body() body: Record<string, any>): Promise<any> {
     return this.loginUsecase.login(body.email, body.password);
