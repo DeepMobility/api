@@ -11,6 +11,6 @@ export class AddAccountUsecase {
   ) {}
 
   add(name: string, slug: string, host: string): Promise<any> {
-    return this.accountsRepository.save({name, slug, host});
+    return this.accountsRepository.save({ name, slug, host });
   }
 }

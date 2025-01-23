@@ -12,7 +12,7 @@ export class LoginUsecase {
       throw new UnauthorizedException();
     }
 
-    const jwt = await this.jwtService.signAsync({ isAdmin: true }, { secret: process.env.JWT_SECRET});
+    const jwt = await this.jwtService.signAsync({ isAdmin: true }, { secret: process.env.JWT_SECRET });
 
     return { jwt }
   }

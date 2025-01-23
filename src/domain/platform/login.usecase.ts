@@ -32,7 +32,7 @@ export class LoginUsecase {
       throw new ForbiddenException();
     }
 
-    const jwt = await this.jwtService.signAsync({ userId: user.id }, { secret: process.env.JWT_SECRET});
+    const jwt = await this.jwtService.signAsync({ userId: user.id }, { secret: process.env.JWT_SECRET });
 
     return { jwt };
   }

@@ -1,0 +1,23 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Video } from '../../database/entities/video.entity';
+
+@Injectable()
+export class AddVideoUsecase {
+  constructor(
+    @InjectRepository(Video)
+    private videosRepository: Repository<Video>,
+  ) {}
+
+  add(
+    url: string,
+    name: string,
+    description: string,
+    duration: number,
+    courseId: number,
+    coursePosition: number,
+  ): Promise<any> {
+    return this.videosRepository.save({ url, name, description, duration, courseId, coursePosition });
+  }
+}
