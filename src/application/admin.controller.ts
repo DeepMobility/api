@@ -52,7 +52,7 @@ export class AdminController {
       body.name,
       body.description,
       body.duration,
-      body.courseId,
+      body.course,
       body.coursePosition,
     );
   }

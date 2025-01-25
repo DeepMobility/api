@@ -35,6 +35,9 @@ export class User {
   @Column({ nullable: true })
   birthYear: number;
 
+  @Column({ nullable: true })
+  jobType: string;
+
   @CreateDateColumn({ type: 'timestamptz' })
   readonly createdAt: Date;
 }

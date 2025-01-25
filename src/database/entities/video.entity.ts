@@ -26,7 +26,7 @@ export class Video {
   tags: string[];
 
   @Column({ nullable: true })
-  courseId: number;
+  course: string;
 
   @Column({ nullable: true })
   coursePosition: number;

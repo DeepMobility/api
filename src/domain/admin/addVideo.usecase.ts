@@ -15,9 +15,9 @@ export class AddVideoUsecase {
     name: string,
     description: string,
     duration: number,
-    courseId: number,
+    course: string,
     coursePosition: number,
   ): Promise<any> {
-    return this.videosRepository.save({ url, name, description, duration, courseId, coursePosition });
+    return this.videosRepository.save({ url, name, description, duration, course, coursePosition });
   }
 }
