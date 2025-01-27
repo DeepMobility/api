@@ -30,7 +30,7 @@ export class AdminController {
 
   @Admin()
   @Post('add-account')
-  addAccount(@Body() body: Record<string, any>): Promise<any>  {
+  addAccount(@Body() body: Record<string, any>): Promise<any> {
     return this.addAccountUsecase.add(
       body.name,
       body.slug,
@@ -46,7 +46,7 @@ export class AdminController {
 
   @Admin()
   @Post('add-video')
-  addVideo(@Body() body: Record<string, any>): Promise<any>  {
+  addVideo(@Body() body: Record<string, any>): Promise<any> {
     return this.addVideoUsecase.add(
       body.url,
       body.name,

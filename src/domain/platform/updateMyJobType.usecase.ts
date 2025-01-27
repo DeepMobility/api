@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from '../../database/entities/user.entity';
 
 @Injectable()
-export class UpdateUserJobTypeUsecase {
+export class UpdateMyJobTypeUsecase {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
