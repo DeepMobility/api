@@ -34,6 +34,12 @@ export class LoginUsecase {
 
     const jwt = await this.jwtService.signAsync({ id: user.id }, { secret: process.env.JWT_SECRET });
 
-    return { jwt, firstName: user.firstName, jobType: user.jobType };
+    return {
+      jwt,
+      firstName: user.firstName,
+      jobType: user.jobType,
+      painfulBodyPart: user.painfulBodyPart,
+      otherThematicInterest: user.otherThematicInterest,
+    };
   }
 }

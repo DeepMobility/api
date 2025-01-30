@@ -38,6 +38,12 @@ export class User {
   @Column({ nullable: true })
   jobType: string;
 
+  @Column({ nullable: true })
+  painfulBodyPart: string;
+
+  @Column({ nullable: true })
+  otherThematicInterest: string;
+
   @CreateDateColumn({ type: 'timestamptz' })
   readonly createdAt: Date;
 }

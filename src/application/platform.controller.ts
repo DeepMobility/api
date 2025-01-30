@@ -3,6 +3,8 @@ import { Public } from './auth.decorator';
 import { LoginUsecase } from '../domain/platform/login.usecase';
 import { RegisterUsecase } from '../domain/platform/register.usecase';
 import { UpdateMyJobTypeUsecase } from '../domain/platform/updateMyJobType.usecase';
+import { UpdateMyPainfulBodyPart } from 'src/domain/platform/updateMyPainfulBodyPart.usecase';
+import { UpdateMyOtherThematicInterest } from 'src/domain/platform/updateMyOtherThematicInterest.usecase';
 import { GetMyDashboardUsecase } from 'src/domain/platform/getMyDashboard.usecase';
 
 @Controller('platform')
@@ -11,6 +13,8 @@ export class PlatformController {
     private loginUsecase: LoginUsecase,
     private registerUsecase: RegisterUsecase,
     private updateMyJobTypeUsecase: UpdateMyJobTypeUsecase,
+    private updateMyPainfulBodyPartUsecase: UpdateMyPainfulBodyPart,
+    private updateMyOtherThematicInterestUsecase: UpdateMyOtherThematicInterest,
     private getMyDashboardUsecase: GetMyDashboardUsecase,
   ) {}
 
@@ -42,6 +46,28 @@ export class PlatformController {
     return this.updateMyJobTypeUsecase.update(
       request.user.id,
       body.jobType,
+    );
+  }
+
+  @Post('update-my-painful-body-part')
+  updateMyPainfulBodyPart(
+    @Body() body: Record<string, any>,
+    @Request() request: any
+  ): Promise<any> {
+    return this.updateMyPainfulBodyPartUsecase.update(
+      request.user.id,
+      body.bodyPart,
+    );
+  }
+
+  @Post('update-my-other-thematic-interest')
+  updateMyOtherThematicInterest(
+    @Body() body: Record<string, any>,
+    @Request() request: any
+  ): Promise<any> {
+    return this.updateMyOtherThematicInterestUsecase.update(
+      request.user.id,
+      body.thematic,
     );
   }
 
