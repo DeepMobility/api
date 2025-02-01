@@ -27,6 +27,7 @@ export class GetMyDashboardUsecase {
         return {
           id : video.id,
           url: video.url,
+          thumbnailUrl: video.thumbnailUrl,
           name: video.name,
           description: video.description,
           duration: video.duration,

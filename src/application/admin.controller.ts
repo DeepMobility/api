@@ -50,6 +50,7 @@ export class AdminController {
     return this.addVideoUsecase.add(
       body.url,
       body.name,
+      body.thumbnailUrl,
       body.description,
       body.duration,
       body.course,

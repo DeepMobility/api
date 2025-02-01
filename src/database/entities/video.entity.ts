@@ -14,6 +14,9 @@ export class Video {
   url: string;
 
   @Column({ nullable: true })
+  thumbnailUrl: string;
+
+  @Column({ nullable: true })
   name: string;
 
   @Column({ nullable: true })

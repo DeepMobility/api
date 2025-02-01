@@ -12,12 +12,13 @@ export class AddVideoUsecase {
 
   add(
     url: string,
+    thumbnailUrl: string,
     name: string,
     description: string,
     duration: number,
     course: string,
     coursePosition: number,
   ): Promise<any> {
-    return this.videosRepository.save({ url, name, description, duration, course, coursePosition });
+    return this.videosRepository.save({ url, thumbnailUrl, name, description, duration, course, coursePosition });
   }
 }
