@@ -14,7 +14,7 @@ export class User {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @ManyToOne(() => Account, (account) => account.users, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Account, (account) => account.users, { onDelete: 'CASCADE', nullable: false })
   account: Account;
 
   @Column()
