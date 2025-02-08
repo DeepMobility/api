@@ -25,14 +25,17 @@ export class Video {
   @Column({ nullable: true })
   duration: number;
 
-  @Column("text", { array: true, default: [] })
-  tags: string[];
-
   @Column({ nullable: true })
   course: string;
 
   @Column({ nullable: true })
   coursePosition: number;
+
+  @Column("text", { array: true, default: [] })
+  bodyParts: string[];
+
+  @Column("text", { array: true, default: [] })
+  injuryTypes: string[];
 
   @CreateDateColumn({ type: 'timestamptz' })
   readonly createdAt: Date;

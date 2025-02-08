@@ -55,6 +55,8 @@ export class AdminController {
       body.duration,
       body.course,
       body.coursePosition,
+      body.bodyParts,
+      body.injuryTypes,
     );
   }
 }
