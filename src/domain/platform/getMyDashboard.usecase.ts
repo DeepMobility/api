@@ -26,13 +26,15 @@ export class GetMyDashboardUsecase {
       videos: videos.map((video) => {
         return {
           id : video.id,
+          name: video.name,
           url: video.url,
           thumbnailUrl: video.thumbnailUrl,
-          name: video.name,
           description: video.description,
           duration: video.duration,
           course: video.course,
-          coursePosition: video.coursePosition
+          coursePosition: video.coursePosition,
+          bodyParts: video.bodyParts,
+          exerciseTypes: video.exerciseTypes,
         }
       })
     };

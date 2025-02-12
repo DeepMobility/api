@@ -19,7 +19,7 @@ export class AddVideoUsecase {
     course: string,
     coursePosition: number,
     bodyParts: string[],
-    injuryTypes: string[],
+    exerciseTypes: string[],
   ): Promise<any> {
     return this.videosRepository.save({
       name,
@@ -30,7 +30,7 @@ export class AddVideoUsecase {
       course,
       coursePosition,
       bodyParts,
-      injuryTypes,
+      exerciseTypes,
     });
   }
 }

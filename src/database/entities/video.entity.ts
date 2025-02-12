@@ -35,7 +35,7 @@ export class Video {
   bodyParts: string[];
 
   @Column("text", { array: true, default: [] })
-  injuryTypes: string[];
+  exerciseTypes: string[];
 
   @CreateDateColumn({ type: 'timestamptz' })
   readonly createdAt: Date;
