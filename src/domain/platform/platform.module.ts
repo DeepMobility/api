@@ -9,9 +9,12 @@ import { UpdateMyJobTypeUsecase } from './updateMyJobType.usecase';
 import { UpdateMyOtherThematicInterest } from './updateMyOtherThematicInterest.usecase';
 import { UpdateMyPainfulBodyPart } from './updateMyPainfulBodyPart.usecase';
 import { GetMyDashboardUsecase } from './getMyDashboard.usecase';
+import { StartSessionUsecase } from './start-session.usecase';
+import { EndSessionUsecase } from './end-session.usecase';
+import { Session } from 'src/database/entities/session.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Account, User, Video])],
+  imports: [TypeOrmModule.forFeature([Account, User, Video, Session])],
   providers: [
     LoginUsecase,
     RegisterUsecase,
@@ -19,6 +22,8 @@ import { GetMyDashboardUsecase } from './getMyDashboard.usecase';
     UpdateMyOtherThematicInterest,
     UpdateMyPainfulBodyPart,
     GetMyDashboardUsecase,
+    StartSessionUsecase,
+    EndSessionUsecase,
   ],
   exports: [
     LoginUsecase,
@@ -27,6 +32,8 @@ import { GetMyDashboardUsecase } from './getMyDashboard.usecase';
     UpdateMyOtherThematicInterest,
     UpdateMyPainfulBodyPart,
     GetMyDashboardUsecase,
+    StartSessionUsecase,
+    EndSessionUsecase,
   ]
 })
 export class PlatformModule {}

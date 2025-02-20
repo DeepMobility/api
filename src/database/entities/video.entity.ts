@@ -3,12 +3,17 @@ import {
   Column,
   Entity,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { Session } from './session.entity';
 
 @Entity()
 export class Video {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @OneToMany(() => Session, (session) => session.video)
+  sessions: Session[];
 
   @Column()
   url: string;

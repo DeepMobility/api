@@ -4,9 +4,11 @@ import {
   Entity,
   CreateDateColumn,
   ManyToOne,
-  Unique
+  Unique,
+  OneToMany
 } from 'typeorm';
 import { Account } from './account.entity';
+import { Session } from './session.entity';
 
 @Unique(["account", "email"])
 @Entity()
@@ -16,6 +18,9 @@ export class User {
 
   @ManyToOne(() => Account, (account) => account.users, { onDelete: 'CASCADE', nullable: false })
   account: Account;
+
+  @OneToMany(() => Session, (session) => session.user)
+  sessions: Session[];
 
   @Column()
   email: string;

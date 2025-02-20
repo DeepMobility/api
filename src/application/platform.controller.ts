@@ -6,6 +6,8 @@ import { UpdateMyJobTypeUsecase } from '../domain/platform/updateMyJobType.useca
 import { UpdateMyPainfulBodyPart } from 'src/domain/platform/updateMyPainfulBodyPart.usecase';
 import { UpdateMyOtherThematicInterest } from 'src/domain/platform/updateMyOtherThematicInterest.usecase';
 import { GetMyDashboardUsecase } from 'src/domain/platform/getMyDashboard.usecase';
+import { StartSessionUsecase } from 'src/domain/platform/start-session.usecase';
+import { EndSessionUsecase } from 'src/domain/platform/end-session.usecase';
 
 @Controller('platform')
 export class PlatformController {
@@ -16,6 +18,8 @@ export class PlatformController {
     private updateMyPainfulBodyPartUsecase: UpdateMyPainfulBodyPart,
     private updateMyOtherThematicInterestUsecase: UpdateMyOtherThematicInterest,
     private getMyDashboardUsecase: GetMyDashboardUsecase,
+    private startSessionUsecase: StartSessionUsecase,
+    private endSessionUsecase: EndSessionUsecase,
   ) {}
 
   @Public()
@@ -74,5 +78,28 @@ export class PlatformController {
   @Get('get-my-dashboard')
   getMyDashboard(@Request() request: any): Promise<any> {
     return this.getMyDashboardUsecase.get(request.user.id);
+  }
+
+  @Post('start-session')
+  startSession(
+    @Body() body: Record<string, any>,
+    @Request() request: any
+  ): Promise<any> {
+    return this.startSessionUsecase.start(
+      request.user.id,
+      body.videoId,
+      body.question,
+      body.questionRating
+    );
+  }
+
+  @Post('end-session')
+  endSession(
+    @Body() body: Record<string, any>,
+  ): Promise<any> {
+    return this.endSessionUsecase.end(
+      body.sessionId,
+      body.questionRating
+    );
   }
 }
