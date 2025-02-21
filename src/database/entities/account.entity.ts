@@ -21,6 +21,9 @@ export class Account {
   @Column({ unique: true })
   host: string;
 
+  @Column({ nullable: true })
+  logoUrl: string;
+
   @OneToMany(() => User, (user) => user.account)
   users: User[];
 

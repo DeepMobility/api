@@ -36,7 +36,8 @@ export class AdminController {
     return this.addAccountUsecase.add(
       body.name,
       body.slug,
-      body.host
+      body.host,
+      body.logoUrl,
     );
   }
 

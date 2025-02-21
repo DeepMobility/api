@@ -10,7 +10,7 @@ export class AddAccountUsecase {
     private accountsRepository: Repository<Account>,
   ) {}
 
-  add(name: string, slug: string, host: string): Promise<any> {
-    return this.accountsRepository.save({ name, slug, host });
+  add(name: string, slug: string, host: string, logoUrl: string): Promise<any> {
+    return this.accountsRepository.save({ name, slug, host, logoUrl });
   }
 }
