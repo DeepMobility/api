@@ -30,18 +30,25 @@ export class GetMyDashboardUsecase {
       .filter((video) => video.course === course)
       .sort((v1, v2) => v1.coursePosition - v2.coursePosition)
 
-    const orderedUserSessions = user.sessions.sort((s1, s2) => s2.createdAt.getTime() - s1.createdAt.getTime());
+    const orderedUserSessions = user.sessions.sort((s1, s2) => s1.createdAt.getTime() - s2.createdAt.getTime());
 
     const lastUserSession = orderedUserSessions.length ? orderedUserSessions[orderedUserSessions.length - 1] : null;
 
-    const dailySessionDone = lastUserSession ? lastUserSession.createdAt.toDateString() === (new Date()).toDateString() : false
+    const today = new Date();
+
+    const dailySessionDone = lastUserSession ? lastUserSession.createdAt.toDateString() === today.toDateString() : false;
 
     const dailyVideo = getDailyVideo(lastUserSession, courseVideos, dailySessionDone);
+
+    const lastWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
+
+    const weeklySessionsCount = orderedUserSessions.filter(session => session.createdAt > lastWeek).length;
 
     return {
       name: user.firstName,
       dailyVideo,
       dailySessionDone,
+      weeklySessionsCount,
       course,
       courseVideos,
       videos,
