@@ -9,10 +9,10 @@ import { UpdateMyJobTypeUsecase } from './updateMyJobType.usecase';
 import { UpdateMyOtherThematicInterest } from './updateMyOtherThematicInterest.usecase';
 import { UpdateMyPainfulBodyPart } from './updateMyPainfulBodyPart.usecase';
 import { GetMyDashboardUsecase } from './getMyDashboard.usecase';
-import { StartSessionUsecase } from './start-session.usecase';
-import { EndSessionUsecase } from './end-session.usecase';
+import { StartSessionUsecase } from './startSession.usecase';
+import { EndSessionUsecase } from './endSession.usecase';
 import { Session } from 'src/database/entities/session.entity';
-import { GetAccountLogoUrlUsecase } from './get-account-logo-url.usecase';
+import { GetAccountLogoUrlUsecase } from './getAccountLogoUrl.usecase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Account, User, Video, Session])],

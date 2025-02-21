@@ -6,9 +6,9 @@ import { UpdateMyJobTypeUsecase } from '../domain/platform/updateMyJobType.useca
 import { UpdateMyPainfulBodyPart } from 'src/domain/platform/updateMyPainfulBodyPart.usecase';
 import { UpdateMyOtherThematicInterest } from 'src/domain/platform/updateMyOtherThematicInterest.usecase';
 import { GetMyDashboardUsecase } from 'src/domain/platform/getMyDashboard.usecase';
-import { StartSessionUsecase } from 'src/domain/platform/start-session.usecase';
-import { EndSessionUsecase } from 'src/domain/platform/end-session.usecase';
-import { GetAccountLogoUrlUsecase } from 'src/domain/platform/get-account-logo-url.usecase';
+import { StartSessionUsecase } from 'src/domain/platform/startSession.usecase';
+import { EndSessionUsecase } from 'src/domain/platform/endSession.usecase';
+import { GetAccountLogoUrlUsecase } from 'src/domain/platform/getAccountLogoUrl.usecase';
 
 @Controller('platform')
 export class PlatformController {

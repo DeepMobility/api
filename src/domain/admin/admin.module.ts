@@ -9,12 +9,14 @@ import { AddAccountUsecase } from './addAccount.usecase';
 import { GetAllVideosUsecase } from './getAllVideos.usecase';
 import { AddVideoUsecase } from './addVideo.usecase';
 import { RemoveVideoUsecase } from './removeVideo.usecase';
+import { RemoveAccountUsecase } from './removeAccount.usecase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Account, User, Video])],
   providers: [
     LoginUsecase,
     AddAccountUsecase,
+    RemoveAccountUsecase,
     GetAllAccountsUsecase,
     GetAllVideosUsecase,
     AddVideoUsecase,
@@ -23,6 +25,7 @@ import { RemoveVideoUsecase } from './removeVideo.usecase';
   exports: [
     LoginUsecase,
     AddAccountUsecase,
+    RemoveAccountUsecase,
     GetAllAccountsUsecase,
     GetAllVideosUsecase,
     AddVideoUsecase,
