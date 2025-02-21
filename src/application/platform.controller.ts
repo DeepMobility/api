@@ -1,4 +1,4 @@
-import { Request, Body, Controller, Get, Post } from '@nestjs/common';
+import { Request, Body, Controller, Get, Post, Param } from '@nestjs/common';
 import { Public } from './auth.decorator';
 import { LoginUsecase } from '../domain/platform/login.usecase';
 import { RegisterUsecase } from '../domain/platform/register.usecase';
@@ -8,6 +8,7 @@ import { UpdateMyOtherThematicInterest } from 'src/domain/platform/updateMyOther
 import { GetMyDashboardUsecase } from 'src/domain/platform/getMyDashboard.usecase';
 import { StartSessionUsecase } from 'src/domain/platform/start-session.usecase';
 import { EndSessionUsecase } from 'src/domain/platform/end-session.usecase';
+import { GetAccountLogoUrlUsecase } from 'src/domain/platform/get-account-logo-url.usecase';
 
 @Controller('platform')
 export class PlatformController {
@@ -20,7 +21,14 @@ export class PlatformController {
     private getMyDashboardUsecase: GetMyDashboardUsecase,
     private startSessionUsecase: StartSessionUsecase,
     private endSessionUsecase: EndSessionUsecase,
+    private getAccountLogoUrlUsecase: GetAccountLogoUrlUsecase,
   ) {}
+
+  @Public()
+  @Get('get-account-logo-url/:accountHost')
+  getAccountLogoUrl(@Param() params: any): Promise<any> {
+    return this.getAccountLogoUrlUsecase.get(params.accountHost);
+  }
 
   @Public()
   @Post('login')

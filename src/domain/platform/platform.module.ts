@@ -12,10 +12,12 @@ import { GetMyDashboardUsecase } from './getMyDashboard.usecase';
 import { StartSessionUsecase } from './start-session.usecase';
 import { EndSessionUsecase } from './end-session.usecase';
 import { Session } from 'src/database/entities/session.entity';
+import { GetAccountLogoUrlUsecase } from './get-account-logo-url.usecase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Account, User, Video, Session])],
   providers: [
+    GetAccountLogoUrlUsecase,
     LoginUsecase,
     RegisterUsecase,
     UpdateMyJobTypeUsecase,
@@ -26,6 +28,7 @@ import { Session } from 'src/database/entities/session.entity';
     EndSessionUsecase,
   ],
   exports: [
+    GetAccountLogoUrlUsecase,
     LoginUsecase,
     RegisterUsecase,
     UpdateMyJobTypeUsecase,
