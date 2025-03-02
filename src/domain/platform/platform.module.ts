@@ -13,6 +13,8 @@ import { StartSessionUsecase } from './startSession.usecase';
 import { EndSessionUsecase } from './endSession.usecase';
 import { Session } from 'src/database/entities/session.entity';
 import { GetAccountLogoUrlUsecase } from './getAccountLogoUrl.usecase';
+import { ResetPasswordUsecase } from './resetPassword.usecase';
+import { NewPasswordUsecase } from './newPassword.usecase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Account, User, Video, Session])],
@@ -20,6 +22,8 @@ import { GetAccountLogoUrlUsecase } from './getAccountLogoUrl.usecase';
     GetAccountLogoUrlUsecase,
     LoginUsecase,
     RegisterUsecase,
+    ResetPasswordUsecase,
+    NewPasswordUsecase,
     UpdateMyJobTypeUsecase,
     UpdateMyOtherThematicInterest,
     UpdateMyPainfulBodyParts,
@@ -31,6 +35,8 @@ import { GetAccountLogoUrlUsecase } from './getAccountLogoUrl.usecase';
     GetAccountLogoUrlUsecase,
     LoginUsecase,
     RegisterUsecase,
+    ResetPasswordUsecase,
+    NewPasswordUsecase,
     UpdateMyJobTypeUsecase,
     UpdateMyOtherThematicInterest,
     UpdateMyPainfulBodyParts,

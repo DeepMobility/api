@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, ForbiddenException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
@@ -14,6 +14,10 @@ export class LoginUsecase {
   ) {}
 
   async login(accountHost: string, email: string, password: string): Promise<any> {
+    if (!accountHost) {
+      throw new BadRequestException()
+    }
+    
     const user = await this.usersRepository.findOne({
       relations: { account: true },
       where: {

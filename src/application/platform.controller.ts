@@ -9,12 +9,16 @@ import { GetMyDashboardUsecase } from 'src/domain/platform/getMyDashboard.usecas
 import { StartSessionUsecase } from 'src/domain/platform/startSession.usecase';
 import { EndSessionUsecase } from 'src/domain/platform/endSession.usecase';
 import { GetAccountLogoUrlUsecase } from 'src/domain/platform/getAccountLogoUrl.usecase';
+import { ResetPasswordUsecase } from 'src/domain/platform/resetPassword.usecase';
+import { NewPasswordUsecase } from 'src/domain/platform/newPassword.usecase';
 
 @Controller('platform')
 export class PlatformController {
   constructor(
     private loginUsecase: LoginUsecase,
     private registerUsecase: RegisterUsecase,
+    private resetPasswordUsecase: ResetPasswordUsecase,
+    private newPasswordUsecase: NewPasswordUsecase,
     private updateMyJobTypeUsecase: UpdateMyJobTypeUsecase,
     private updateMyPainfulBodyPartsUsecase: UpdateMyPainfulBodyParts,
     private updateMyOtherThematicInterestUsecase: UpdateMyOtherThematicInterest,
@@ -48,6 +52,18 @@ export class PlatformController {
       body.gender,
       body.birthYear,
     );
+  }
+
+  @Public()
+  @Post('reset-password')
+  resetPassword(@Body() body: Record<string, any>) {
+    return this.resetPasswordUsecase.reset(body.accountHost, body.email);
+  }
+
+  @Public()
+  @Post('new-password')
+  newPassword(@Body() body: Record<string, any>) {
+    return this.newPasswordUsecase.update(body.token, body.newPassword);
   }
 
   @Post('update-my-job-type')
