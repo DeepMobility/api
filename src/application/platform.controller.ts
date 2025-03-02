@@ -3,7 +3,7 @@ import { Public } from './auth.decorator';
 import { LoginUsecase } from '../domain/platform/login.usecase';
 import { RegisterUsecase } from '../domain/platform/register.usecase';
 import { UpdateMyJobTypeUsecase } from '../domain/platform/updateMyJobType.usecase';
-import { UpdateMyPainfulBodyPart } from 'src/domain/platform/updateMyPainfulBodyPart.usecase';
+import { UpdateMyPainfulBodyParts } from 'src/domain/platform/updateMyPainfulBodyParts.usecase';
 import { UpdateMyOtherThematicInterest } from 'src/domain/platform/updateMyOtherThematicInterest.usecase';
 import { GetMyDashboardUsecase } from 'src/domain/platform/getMyDashboard.usecase';
 import { StartSessionUsecase } from 'src/domain/platform/startSession.usecase';
@@ -16,7 +16,7 @@ export class PlatformController {
     private loginUsecase: LoginUsecase,
     private registerUsecase: RegisterUsecase,
     private updateMyJobTypeUsecase: UpdateMyJobTypeUsecase,
-    private updateMyPainfulBodyPartUsecase: UpdateMyPainfulBodyPart,
+    private updateMyPainfulBodyPartsUsecase: UpdateMyPainfulBodyParts,
     private updateMyOtherThematicInterestUsecase: UpdateMyOtherThematicInterest,
     private getMyDashboardUsecase: GetMyDashboardUsecase,
     private startSessionUsecase: StartSessionUsecase,
@@ -61,14 +61,14 @@ export class PlatformController {
     );
   }
 
-  @Post('update-my-painful-body-part')
-  updateMyPainfulBodyPart(
+  @Post('update-my-painful-body-parts')
+  updateMyPainfulBodyParts(
     @Body() body: Record<string, any>,
     @Request() request: any
   ): Promise<any> {
-    return this.updateMyPainfulBodyPartUsecase.update(
+    return this.updateMyPainfulBodyPartsUsecase.update(
       request.user.id,
-      body.bodyPart,
+      body.bodyParts,
     );
   }
 

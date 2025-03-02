@@ -38,7 +38,7 @@ export class LoginUsecase {
       jwt,
       firstName: user.firstName,
       jobType: user.jobType,
-      painfulBodyPart: user.painfulBodyPart,
+      painfulBodyParts: user.painfulBodyParts,
       otherThematicInterest: user.otherThematicInterest,
     };
   }

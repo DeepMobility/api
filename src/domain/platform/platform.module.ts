@@ -7,7 +7,7 @@ import { LoginUsecase } from './login.usecase';
 import { RegisterUsecase } from './register.usecase';
 import { UpdateMyJobTypeUsecase } from './updateMyJobType.usecase';
 import { UpdateMyOtherThematicInterest } from './updateMyOtherThematicInterest.usecase';
-import { UpdateMyPainfulBodyPart } from './updateMyPainfulBodyPart.usecase';
+import { UpdateMyPainfulBodyParts } from './updateMyPainfulBodyParts.usecase';
 import { GetMyDashboardUsecase } from './getMyDashboard.usecase';
 import { StartSessionUsecase } from './startSession.usecase';
 import { EndSessionUsecase } from './endSession.usecase';
@@ -22,7 +22,7 @@ import { GetAccountLogoUrlUsecase } from './getAccountLogoUrl.usecase';
     RegisterUsecase,
     UpdateMyJobTypeUsecase,
     UpdateMyOtherThematicInterest,
-    UpdateMyPainfulBodyPart,
+    UpdateMyPainfulBodyParts,
     GetMyDashboardUsecase,
     StartSessionUsecase,
     EndSessionUsecase,
@@ -33,7 +33,7 @@ import { GetAccountLogoUrlUsecase } from './getAccountLogoUrl.usecase';
     RegisterUsecase,
     UpdateMyJobTypeUsecase,
     UpdateMyOtherThematicInterest,
-    UpdateMyPainfulBodyPart,
+    UpdateMyPainfulBodyParts,
     GetMyDashboardUsecase,
     StartSessionUsecase,
     EndSessionUsecase,

@@ -43,8 +43,8 @@ export class User {
   @Column({ nullable: true })
   jobType: string;
 
-  @Column({ nullable: true })
-  painfulBodyPart: string;
+  @Column("text", { array: true, default: [] })
+  painfulBodyParts: string[];
 
   @Column({ nullable: true })
   otherThematicInterest: string;
