@@ -40,7 +40,11 @@ export class GetMyDashboardUsecase {
 
     const dailyVideo = getDailyVideo(lastUserSession, courseVideos, dailySessionDone);
 
-    const lastWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
+    const weekDay = today.getDay();
+
+    const startOfWeekDiff = weekDay === 0 ? 6 : weekDay - 1;
+
+    const lastWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - startOfWeekDiff);
 
     const weeklySessionsCount = orderedUserSessions.filter(session => session.createdAt > lastWeek).length;
 
