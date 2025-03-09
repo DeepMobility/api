@@ -48,8 +48,14 @@ export class GetMyDashboardUsecase {
 
     const weeklySessionsCount = orderedUserSessions.filter(session => session.createdAt > lastWeek).length;
 
+    let lastQuarter = new Date();
+    lastQuarter.setMonth(lastQuarter.getMonth() - 3);
+
+    const isSurveyDue = user.createdAt < lastQuarter && Object.keys(user.survey).length === 0
+
     return {
       name: user.firstName,
+      isSurveyDue,
       dailyVideo,
       dailySessionDone,
       weeklySessionsCount,

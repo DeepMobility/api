@@ -15,6 +15,7 @@ import { Session } from 'src/database/entities/session.entity';
 import { GetAccountLogoUrlUsecase } from './getAccountLogoUrl.usecase';
 import { ResetPasswordUsecase } from './resetPassword.usecase';
 import { NewPasswordUsecase } from './newPassword.usecase';
+import { AnswerSurveyUsecase } from './answerSurvey.usecase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Account, User, Video, Session])],
@@ -30,6 +31,7 @@ import { NewPasswordUsecase } from './newPassword.usecase';
     GetMyDashboardUsecase,
     StartSessionUsecase,
     EndSessionUsecase,
+    AnswerSurveyUsecase,
   ],
   exports: [
     GetAccountLogoUrlUsecase,
@@ -43,6 +45,7 @@ import { NewPasswordUsecase } from './newPassword.usecase';
     GetMyDashboardUsecase,
     StartSessionUsecase,
     EndSessionUsecase,
+    AnswerSurveyUsecase,
   ]
 })
 export class PlatformModule {}

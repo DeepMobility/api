@@ -49,6 +49,9 @@ export class User {
   @Column({ nullable: true })
   otherThematicInterest: string;
 
+  @Column("jsonb", { default: {} })
+  survey: any;
+
   @CreateDateColumn({ type: 'timestamptz' })
   readonly createdAt: Date;
 }

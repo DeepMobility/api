@@ -11,6 +11,7 @@ import { EndSessionUsecase } from 'src/domain/platform/endSession.usecase';
 import { GetAccountLogoUrlUsecase } from 'src/domain/platform/getAccountLogoUrl.usecase';
 import { ResetPasswordUsecase } from 'src/domain/platform/resetPassword.usecase';
 import { NewPasswordUsecase } from 'src/domain/platform/newPassword.usecase';
+import { AnswerSurveyUsecase } from 'src/domain/platform/answerSurvey.usecase';
 
 @Controller('platform')
 export class PlatformController {
@@ -26,6 +27,7 @@ export class PlatformController {
     private startSessionUsecase: StartSessionUsecase,
     private endSessionUsecase: EndSessionUsecase,
     private getAccountLogoUrlUsecase: GetAccountLogoUrlUsecase,
+    private answerSurveyUsecase: AnswerSurveyUsecase,
   ) {}
 
   @Public()
@@ -124,6 +126,17 @@ export class PlatformController {
     return this.endSessionUsecase.end(
       body.sessionId,
       body.questionRating
+    );
+  }
+  
+  @Post('answer-survey')
+  answerSurvey(
+    @Body() body: Record<string, any>,
+    @Request() request: any
+  ): Promise<any> {
+    return this.answerSurveyUsecase.answer(
+      request.user.id,
+      body.survey
     );
   }
 }
