@@ -30,7 +30,9 @@ export class GetMyDashboardUsecase {
       .filter((video) => video.course === course)
       .sort((v1, v2) => v1.coursePosition - v2.coursePosition)
 
-    const orderedUserSessions = user.sessions.sort((s1, s2) => s1.createdAt.getTime() - s2.createdAt.getTime());
+    const filteredSessions = user.sessions.filter(session => session.question)
+
+    const orderedUserSessions = filteredSessions.sort((s1, s2) => s1.createdAt.getTime() - s2.createdAt.getTime());
 
     const lastUserSession = orderedUserSessions.length ? orderedUserSessions[orderedUserSessions.length - 1] : null;
 
@@ -62,6 +64,7 @@ export class GetMyDashboardUsecase {
       course,
       courseVideos,
       videos,
+      badges: user.badges,
     };
   }
 }

@@ -49,6 +49,9 @@ export class User {
   @Column({ nullable: true })
   otherThematicInterest: string;
 
+  @Column("text", { array: true, default: [] })
+  badges: string[];
+
   @Column("jsonb", { default: {} })
   survey: any;
 
