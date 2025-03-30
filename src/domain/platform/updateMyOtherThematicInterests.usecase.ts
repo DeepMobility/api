@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from '../../database/entities/user.entity';
 
 @Injectable()
-export class UpdateMyOtherThematicInterest {
+export class UpdateMyOtherThematicInterests {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
@@ -12,8 +12,8 @@ export class UpdateMyOtherThematicInterest {
 
   async update(
     userId: string,
-    thematic: string
+    thematics: string
   ): Promise<any> {
-    return this.usersRepository.save({ id: userId, otherThematicInterest: thematic });
+    return this.usersRepository.save({ id: userId, otherThematicInterests: thematics });
   }
 }

@@ -4,7 +4,7 @@ import { LoginUsecase } from '../domain/platform/login.usecase';
 import { RegisterUsecase } from '../domain/platform/register.usecase';
 import { UpdateMyJobTypeUsecase } from '../domain/platform/updateMyJobType.usecase';
 import { UpdateMyPainfulBodyParts } from 'src/domain/platform/updateMyPainfulBodyParts.usecase';
-import { UpdateMyOtherThematicInterest } from 'src/domain/platform/updateMyOtherThematicInterest.usecase';
+import { UpdateMyOtherThematicInterests } from 'src/domain/platform/updateMyOtherThematicInterests.usecase';
 import { GetMyDashboardUsecase } from 'src/domain/platform/getMyDashboard.usecase';
 import { StartSessionUsecase } from 'src/domain/platform/startSession.usecase';
 import { EndSessionUsecase } from 'src/domain/platform/endSession.usecase';
@@ -22,7 +22,7 @@ export class PlatformController {
     private newPasswordUsecase: NewPasswordUsecase,
     private updateMyJobTypeUsecase: UpdateMyJobTypeUsecase,
     private updateMyPainfulBodyPartsUsecase: UpdateMyPainfulBodyParts,
-    private updateMyOtherThematicInterestUsecase: UpdateMyOtherThematicInterest,
+    private updateMyOtherThematicInterestsUsecase: UpdateMyOtherThematicInterests,
     private getMyDashboardUsecase: GetMyDashboardUsecase,
     private startSessionUsecase: StartSessionUsecase,
     private endSessionUsecase: EndSessionUsecase,
@@ -90,14 +90,14 @@ export class PlatformController {
     );
   }
 
-  @Post('update-my-other-thematic-interest')
-  updateMyOtherThematicInterest(
+  @Post('update-my-other-thematic-interests')
+  updateMyOtherThematicInterests(
     @Body() body: Record<string, any>,
     @Request() request: any
   ): Promise<any> {
-    return this.updateMyOtherThematicInterestUsecase.update(
+    return this.updateMyOtherThematicInterestsUsecase.update(
       request.user.id,
-      body.thematic,
+      body.thematics,
     );
   }
 

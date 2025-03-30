@@ -6,7 +6,7 @@ import { Video } from '../../database/entities/video.entity';
 import { LoginUsecase } from './login.usecase';
 import { RegisterUsecase } from './register.usecase';
 import { UpdateMyJobTypeUsecase } from './updateMyJobType.usecase';
-import { UpdateMyOtherThematicInterest } from './updateMyOtherThematicInterest.usecase';
+import { UpdateMyOtherThematicInterests } from './updateMyOtherThematicInterests.usecase';
 import { UpdateMyPainfulBodyParts } from './updateMyPainfulBodyParts.usecase';
 import { GetMyDashboardUsecase } from './getMyDashboard.usecase';
 import { StartSessionUsecase } from './startSession.usecase';
@@ -26,7 +26,7 @@ import { AnswerSurveyUsecase } from './answerSurvey.usecase';
     ResetPasswordUsecase,
     NewPasswordUsecase,
     UpdateMyJobTypeUsecase,
-    UpdateMyOtherThematicInterest,
+    UpdateMyOtherThematicInterests,
     UpdateMyPainfulBodyParts,
     GetMyDashboardUsecase,
     StartSessionUsecase,
@@ -40,7 +40,7 @@ import { AnswerSurveyUsecase } from './answerSurvey.usecase';
     ResetPasswordUsecase,
     NewPasswordUsecase,
     UpdateMyJobTypeUsecase,
-    UpdateMyOtherThematicInterest,
+    UpdateMyOtherThematicInterests,
     UpdateMyPainfulBodyParts,
     GetMyDashboardUsecase,
     StartSessionUsecase,

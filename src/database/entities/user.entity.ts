@@ -46,8 +46,8 @@ export class User {
   @Column("text", { array: true, default: [] })
   painfulBodyParts: string[];
 
-  @Column({ nullable: true })
-  otherThematicInterest: string;
+  @Column("text", { array: true, default: [] })
+  otherThematicInterests: string;
 
   @Column("text", { array: true, default: [] })
   badges: string[];
