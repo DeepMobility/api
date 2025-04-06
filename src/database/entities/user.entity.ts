@@ -55,6 +55,9 @@ export class User {
   @Column("jsonb", { default: {} })
   survey: any;
 
+  @Column({ default: 0 })
+  daysInARow: number;
+
   @CreateDateColumn({ type: 'timestamptz' })
   readonly createdAt: Date;
 }

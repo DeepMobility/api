@@ -58,10 +58,10 @@ export class StartSessionUsecase {
       }
     }
 
+    const today = new Date();
+
     if (!user.badges.includes("3-full-week") && question) {
       const filteredSessions = user.sessions.filter(session => session.question)
-
-      const today = new Date();
 
       const weekDay = today.getDay();
 
@@ -82,9 +82,25 @@ export class StartSessionUsecase {
       }
     }
 
+    let daysInARow = user.daysInARow
+
+    const orderedDailySessions = user.sessions.sort((s1, s2) => s1.createdAt.getTime() - s2.createdAt.getTime());
+
+    const dailyActivityAlreadyDone = orderedDailySessions.length ? orderedDailySessions.at(-1).createdAt.toDateString() === today.toDateString() : false;
+
+    if (!dailyActivityAlreadyDone) {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+
+      const yesterdayActivity = orderedDailySessions.length ? orderedDailySessions.at(-1).createdAt.toDateString() === yesterday.toDateString() : false;
+
+      daysInARow = yesterdayActivity ? daysInARow + 1 : 1
+    }
+
     await this.usersRepository.save({
       id: user.id,
       badges: [...user.badges, ...newBadges],
+      daysInARow,
     });
 
     const session = await this.sessionsRepository.save({
@@ -96,7 +112,8 @@ export class StartSessionUsecase {
 
     return {
       session,
-      newBadge: newBadges.filter(badge => badge !== "1-full-week" && badge !== "2-full-week")[0]
+      newBadge: newBadges.filter(badge => badge !== "1-full-week" && badge !== "2-full-week")[0],
+      updatedDaysInArow: daysInARow,
     };
   }
 }

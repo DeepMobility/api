@@ -42,29 +42,32 @@ export class GetMyDashboardUsecase {
 
     const dailyVideo = getDailyVideo(lastUserSession, courseVideos, dailySessionDone);
 
-    const weekDay = today.getDay();
-
-    const startOfWeekDiff = weekDay === 0 ? 6 : weekDay - 1;
-
-    const lastWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - startOfWeekDiff);
-
-    const weeklySessionsCount = orderedUserSessions.filter(session => session.createdAt > lastWeek).length;
-
     let lastQuarter = new Date();
     lastQuarter.setMonth(lastQuarter.getMonth() - 3);
 
     const isSurveyDue = user.createdAt < lastQuarter && Object.keys(user.survey).length === 0
+
+    const orderedDailySessions = user.sessions.sort((s1, s2) => s1.createdAt.getTime() - s2.createdAt.getTime());
+
+    const dailyActivity = orderedDailySessions.length ? orderedDailySessions.at(-1).createdAt.toDateString() === today.toDateString() : false;
+
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    const yesterdayActivity = orderedDailySessions.length ? orderedDailySessions.at(-1).createdAt.toDateString() === yesterday.toDateString() : false;
 
     return {
       name: user.firstName,
       isSurveyDue,
       dailyVideo,
       dailySessionDone,
-      weeklySessionsCount,
       course,
       courseVideos,
       videos,
       badges: user.badges,
+      dailyActivity,
+      yesterdayActivity,
+      daysInArow: user.daysInARow,
     };
   }
 }
