@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { Account } from '../../database/entities/account.entity';
 import { Video } from 'src/database/entities/video.entity';
 
+const questions = ['energy', 'stress', 'pain']
+
 @Injectable()
 export class GetAccountDetailsUsecase {
   constructor(
@@ -78,13 +80,23 @@ export class GetAccountDetailsUsecase {
 
     const dailySessions = accountSessions.filter(session => session.question)
 
-    const dailySessionBeforeRatings = dailySessions.map(session => session.beforeRating);
+    const ratings = questions.map(question => {
+      const questionSessions = dailySessions.filter(session => session.question === question)
 
-    const averageBeforeRating = dailySessionBeforeRatings.reduce((a, b) => a + b, 0) / dailySessionBeforeRatings.length;
+      const dailySessionBeforeRatings = questionSessions.map(session => session.beforeRating);
 
-    const dailySessionAfterRatings = dailySessions.map(session => session.afterRating);
+      const averageBeforeRating = dailySessionBeforeRatings.reduce((a, b) => a + b, 0) / dailySessionBeforeRatings.length;
 
-    const averageAfterRating = dailySessionAfterRatings.reduce((a, b) => a + b, 0) / dailySessionAfterRatings.length;
+      const dailySessionAfterRatings = questionSessions.map(session => session.afterRating);
+
+      const averageAfterRating = dailySessionAfterRatings.reduce((a, b) => a + b, 0) / dailySessionAfterRatings.length;
+
+      return {
+        question,
+        averageBeforeRating,
+        averageAfterRating,
+      }
+    })
 
     return {
       id: account.id,
@@ -95,8 +107,7 @@ export class GetAccountDetailsUsecase {
       lastMonthTimeWatched,
       mostWatchedVideos,
       averageHour,
-      averageBeforeRating,
-      averageAfterRating,
+      ratings,
     };
   }
 }
