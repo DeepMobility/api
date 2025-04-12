@@ -12,6 +12,7 @@ import { RemoveVideoUsecase } from './removeVideo.usecase';
 import { RemoveAccountUsecase } from './removeAccount.usecase';
 import { GetAccountDetailsUsecase } from './getAccountDetails.usecase';
 import { EditVideoUsecase } from './editVideo.usecase';
+import { GetVideoDetailsUsecase } from './getVideoDetails.usecase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Account, User, Video])],
@@ -22,6 +23,7 @@ import { EditVideoUsecase } from './editVideo.usecase';
     GetAllAccountsUsecase,
     GetAllVideosUsecase,
     AddVideoUsecase,
+    GetVideoDetailsUsecase,
     EditVideoUsecase,
     RemoveVideoUsecase,
     GetAccountDetailsUsecase,
@@ -33,6 +35,7 @@ import { EditVideoUsecase } from './editVideo.usecase';
     GetAllAccountsUsecase,
     GetAllVideosUsecase,
     AddVideoUsecase,
+    GetVideoDetailsUsecase,
     EditVideoUsecase,
     RemoveVideoUsecase,
     GetAccountDetailsUsecase,

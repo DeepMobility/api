@@ -9,6 +9,7 @@ import { RemoveVideoUsecase } from 'src/domain/admin/removeVideo.usecase';
 import { RemoveAccountUsecase } from 'src/domain/admin/removeAccount.usecase';
 import { GetAccountDetailsUsecase } from 'src/domain/admin/getAccountDetails.usecase';
 import { EditVideoUsecase } from 'src/domain/admin/editVideo.usecase';
+import { GetVideoDetailsUsecase } from 'src/domain/admin/getVideoDetails.usecase';
 
 @Controller('admin')
 export class AdminController {
@@ -19,6 +20,7 @@ export class AdminController {
     private removeAccountUsecase: RemoveAccountUsecase,
     private getAllVideosUsecase: GetAllVideosUsecase,
     private addVideoUsecase: AddVideoUsecase,
+    private getVideoDetailsUsecase: GetVideoDetailsUsecase,
     private editVideoUsecase: EditVideoUsecase,
     private removeVideoUsecase: RemoveVideoUsecase,
     private getAccountDetailsUsecase: GetAccountDetailsUsecase,
@@ -73,6 +75,12 @@ export class AdminController {
       body.bodyParts,
       body.exerciseTypes,
     );
+  }
+
+  @Admin()
+  @Get('get-video-details/:videoId')
+  getVideoDetails(@Param() params: any): Promise<any> {
+    return this.getVideoDetailsUsecase.get(params.videoId);
   }
 
   @Admin()
