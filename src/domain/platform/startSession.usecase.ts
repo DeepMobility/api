@@ -31,9 +31,9 @@ export class StartSessionUsecase {
 
     const newBadges = []
 
-    if (!user.badges.includes("first-session")) {
-      newBadges.push("first-session")
-    }
+    // if (!user.badges.includes("first-session")) {
+    //   newBadges.push("first-session")
+    // }
 
     if (!user.badges.includes("90min")) {
       const timeWatched = user.sessions.reduce(
@@ -46,21 +46,15 @@ export class StartSessionUsecase {
       }
     }
 
-    if (!user.badges.includes("3-in-1-day")) {
-      const startOfDay = new Date(new Date().setHours(0, 0, 0, 0))
-
-      const dailySessions = user.sessions.filter(session => {
-        return session.createdAt > startOfDay
-      })
-
-      if (dailySessions.length >= 2) {
-        newBadges.push("3-in-1-day")
+    if (!user.badges.includes("3-sessions")) {
+      if (user.sessions.length >= 2) {
+        newBadges.push("3-sessions")
       }
     }
 
     const today = new Date();
 
-    if (!user.badges.includes("3-full-week") && question) {
+    if (!user.badges.includes("5-full-week") && question) {
       const filteredSessions = user.sessions.filter(session => session.question)
 
       const weekDay = today.getDay();
@@ -76,8 +70,12 @@ export class StartSessionUsecase {
           newBadges.push("1-full-week")
         } else if (!user.badges.includes("2-full-week")) {
           newBadges.push("2-full-week")
-        } else {
+        } else if (!user.badges.includes("3-full-week")) {
           newBadges.push("3-full-week")
+        } else if (!user.badges.includes("4-full-week")) {
+          newBadges.push("4-full-week")
+        } else {
+          newBadges.push("5-full-week")
         }
       }
     }
@@ -112,7 +110,7 @@ export class StartSessionUsecase {
 
     return {
       session,
-      newBadge: newBadges.filter(badge => badge !== "1-full-week" && badge !== "2-full-week")[0],
+      newBadges,
       updatedDaysInArow: daysInARow,
     };
   }
