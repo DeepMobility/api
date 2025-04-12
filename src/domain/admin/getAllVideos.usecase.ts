@@ -11,6 +11,8 @@ export class GetAllVideosUsecase {
   ) {}
 
   getAll(): Promise<any[]> {
-    return this.videosRepository.find();
+    return this.videosRepository.find({
+      order: { coursePosition: "ASC" },
+    });
   }
 }
