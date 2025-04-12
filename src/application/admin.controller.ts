@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Public, Admin } from './auth.decorator';
 import { LoginUsecase } from '../domain/admin/login.usecase';
 import { GetAllAccountsUsecase } from '../domain/admin/getAllAccounts.usecase';
@@ -7,6 +7,7 @@ import { GetAllVideosUsecase } from 'src/domain/admin/getAllVideos.usecase';
 import { AddVideoUsecase } from 'src/domain/admin/addVideo.usecase';
 import { RemoveVideoUsecase } from 'src/domain/admin/removeVideo.usecase';
 import { RemoveAccountUsecase } from 'src/domain/admin/removeAccount.usecase';
+import { GetAccountDetailsUsecase } from 'src/domain/admin/getAccountDetails.usecase';
 
 @Controller('admin')
 export class AdminController {
@@ -17,7 +18,8 @@ export class AdminController {
     private removeAccountUsecase: RemoveAccountUsecase,
     private getAllVideosUsecase: GetAllVideosUsecase,
     private addVideoUsecase: AddVideoUsecase,
-    private removeVideoUsecase: RemoveVideoUsecase
+    private removeVideoUsecase: RemoveVideoUsecase,
+    private getAccountDetailsUsecase: GetAccountDetailsUsecase,
   ) {}
 
   @Public()
@@ -75,5 +77,11 @@ export class AdminController {
   @Post('remove-video')
   removeVideo(@Body() body: Record<string, any>): Promise<any> {
     return this.removeVideoUsecase.remove(body.videoId)
+  }
+
+  @Admin()
+  @Get('get-account-details/:accountId')
+  getAccountDetails(@Param() params: any): Promise<any> {
+    return this.getAccountDetailsUsecase.get(params.accountId);
   }
 }

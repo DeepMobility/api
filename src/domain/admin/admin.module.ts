@@ -10,6 +10,7 @@ import { GetAllVideosUsecase } from './getAllVideos.usecase';
 import { AddVideoUsecase } from './addVideo.usecase';
 import { RemoveVideoUsecase } from './removeVideo.usecase';
 import { RemoveAccountUsecase } from './removeAccount.usecase';
+import { GetAccountDetailsUsecase } from './getAccountDetails.usecase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Account, User, Video])],
@@ -20,7 +21,8 @@ import { RemoveAccountUsecase } from './removeAccount.usecase';
     GetAllAccountsUsecase,
     GetAllVideosUsecase,
     AddVideoUsecase,
-    RemoveVideoUsecase
+    RemoveVideoUsecase,
+    GetAccountDetailsUsecase,
   ],
   exports: [
     LoginUsecase,
@@ -29,7 +31,8 @@ import { RemoveAccountUsecase } from './removeAccount.usecase';
     GetAllAccountsUsecase,
     GetAllVideosUsecase,
     AddVideoUsecase,
-    RemoveVideoUsecase
+    RemoveVideoUsecase,
+    GetAccountDetailsUsecase,
   ]
 })
 export class AdminModule {}
