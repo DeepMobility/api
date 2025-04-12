@@ -8,6 +8,7 @@ import { AddVideoUsecase } from 'src/domain/admin/addVideo.usecase';
 import { RemoveVideoUsecase } from 'src/domain/admin/removeVideo.usecase';
 import { RemoveAccountUsecase } from 'src/domain/admin/removeAccount.usecase';
 import { GetAccountDetailsUsecase } from 'src/domain/admin/getAccountDetails.usecase';
+import { EditVideoUsecase } from 'src/domain/admin/editVideo.usecase';
 
 @Controller('admin')
 export class AdminController {
@@ -18,6 +19,7 @@ export class AdminController {
     private removeAccountUsecase: RemoveAccountUsecase,
     private getAllVideosUsecase: GetAllVideosUsecase,
     private addVideoUsecase: AddVideoUsecase,
+    private editVideoUsecase: EditVideoUsecase,
     private removeVideoUsecase: RemoveVideoUsecase,
     private getAccountDetailsUsecase: GetAccountDetailsUsecase,
   ) {}
@@ -61,6 +63,23 @@ export class AdminController {
   @Post('add-video')
   addVideo(@Body() body: Record<string, any>): Promise<any> {
     return this.addVideoUsecase.add(
+      body.name,
+      body.url,
+      body.thumbnailUrl,
+      body.description,
+      body.duration,
+      body.course,
+      body.coursePosition,
+      body.bodyParts,
+      body.exerciseTypes,
+    );
+  }
+
+  @Admin()
+  @Post('edit-video')
+  editVideo(@Body() body: Record<string, any>): Promise<any> {
+    return this.editVideoUsecase.edit(
+      body.videoId,
       body.name,
       body.url,
       body.thumbnailUrl,
