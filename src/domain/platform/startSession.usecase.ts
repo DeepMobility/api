@@ -46,9 +46,21 @@ export class StartSessionUsecase {
       }
     }
 
-    if (!user.badges.includes("3-sessions")) {
-      if (user.sessions.length >= 2) {
-        newBadges.push("3-sessions")
+    // if (!user.badges.includes("3-sessions")) {
+    //   if (user.sessions.length >= 2) {
+    //     newBadges.push("3-sessions")
+    //   }
+    // }
+
+    if (!user.badges.includes("3-in-1-day")) {
+      const startOfDay = new Date(new Date().setHours(0, 0, 0, 0))
+
+      const todaySessions = user.sessions.filter(session => {
+        return session.createdAt > startOfDay
+      })
+
+      if (todaySessions.length >= 2) {
+        newBadges.push("3-in-1-day")
       }
     }
 
