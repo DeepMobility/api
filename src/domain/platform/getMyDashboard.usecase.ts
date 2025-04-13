@@ -38,9 +38,21 @@ export class GetMyDashboardUsecase {
 
     const today = new Date();
 
-    const dailySessionDone = lastUserSession ? lastUserSession.createdAt.toDateString() === today.toDateString() : false;
+    const weekDay = today.getDay();
+
+    const startOfWeekDiff = weekDay === 0 ? 6 : weekDay - 1;
+  
+    const lastWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - startOfWeekDiff);
+  
+    const dailySessionDone = lastUserSession ?
+      (
+        lastUserSession.createdAt.toDateString() === today.toDateString() || 
+        filteredSessions.filter(session => session.createdAt > lastWeek).length >= 5
+      ) : false;
 
     const dailyVideo = getDailyVideo(lastUserSession, courseVideos, dailySessionDone);
+
+    const courseStartIndex = getWeeklyCourseStartIndex(lastWeek, orderedUserSessions, courseVideos);
 
     let lastQuarter = new Date();
     lastQuarter.setMonth(lastQuarter.getMonth() - 3);
@@ -63,6 +75,7 @@ export class GetMyDashboardUsecase {
       dailySessionDone,
       course,
       courseVideos,
+      courseStartIndex,
       videos,
       badges: user.badges,
       dailyActivity,
@@ -88,4 +101,18 @@ function getDailyVideo(lastUserSession: Session, courseVideos: Video[], dailySes
   }
 
   return courseVideos[lastSessionVideoIndex + 1]
+}
+
+function getWeeklyCourseStartIndex(lastWeek: Date, sessions: Session[], courseVideos: Video[]) {
+  const sessionsBeforeThisWeek = sessions.filter(session => session.createdAt < lastWeek);
+
+  const lastSessionBeforeThisWeek = sessionsBeforeThisWeek.length ? sessionsBeforeThisWeek.at(-1) : null;
+
+  if (!lastSessionBeforeThisWeek) {
+    return 0;
+  }
+
+  const videoIndex = courseVideos.findIndex((video) => video.id === lastSessionBeforeThisWeek.video.id)
+
+  return videoIndex === 4 ? 0 : videoIndex + 1;
 }
