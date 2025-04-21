@@ -80,14 +80,14 @@ export class GetAccountDetailsUsecase {
 
     const dailySessions = accountSessions.filter(session => session.question)
 
-    const ratings = questions.map(question => {
+    const ratings = questions.filter(question => question === 'energy').map(question => {
       const questionSessions = dailySessions.filter(session => session.question === question)
 
-      const dailySessionBeforeRatings = questionSessions.map(session => session.beforeRating);
+      const dailySessionBeforeRatings = questionSessions.filter(session => session.beforeRating).map(session => session.beforeRating);
 
       const averageBeforeRating = dailySessionBeforeRatings.reduce((a, b) => a + b, 0) / dailySessionBeforeRatings.length;
 
-      const dailySessionAfterRatings = questionSessions.map(session => session.afterRating);
+      const dailySessionAfterRatings = questionSessions.filter(session => session.afterRating).map(session => session.afterRating);
 
       const averageAfterRating = dailySessionAfterRatings.reduce((a, b) => a + b, 0) / dailySessionAfterRatings.length;
 
