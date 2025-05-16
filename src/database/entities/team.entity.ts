@@ -5,11 +5,13 @@ import {
   CreateDateColumn,
   ManyToMany,
   JoinTable,
+  JoinColumn,
   ManyToOne,
   UpdateDateColumn
 } from 'typeorm';
 import { Challenge } from './challenge.entity';
 import { User } from './user.entity';
+import { Account } from './account.entity';
 
 @Entity()
 export class Team {
@@ -22,8 +24,22 @@ export class Team {
   @Column({ nullable: true })
   description: string;
 
+  @ManyToOne(() => Account, account => account.teams)
+  @JoinColumn({ name: 'account_id' })
+  account: Account;
+
   @ManyToMany(() => User)
-  @JoinTable()
+  @JoinTable({
+    name: 'team_members',
+    joinColumn: {
+      name: 'team_id',
+      referencedColumnName: 'id'
+    },
+    inverseJoinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id'
+    }
+  })
   members: User[];
 
   @ManyToMany(() => Challenge, challenge => challenge.teams)

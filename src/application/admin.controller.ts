@@ -15,6 +15,16 @@ import { AddChallengeUsecase } from '../domain/admin/addChallenge.usecase';
 import { EditChallengeUsecase } from '../domain/admin/editChallenge.usecase';
 import { RemoveChallengeUsecase } from '../domain/admin/removeChallenge.usecase';
 import { GetChallengeDetailsUsecase } from '../domain/admin/getChallengeDetails.usecase';
+import { GetAccountUsersUsecase } from '../domain/admin/getAccountUsers.usecase';
+import { GetUserDetailsUsecase } from '../domain/admin/getUserDetails.usecase';
+import { AddUserUsecase } from '../domain/admin/addUser.usecase';
+import { EditUserUsecase } from '../domain/admin/editUser.usecase';
+import { RemoveUserUsecase } from '../domain/admin/removeUser.usecase';
+import { GetAccountTeamsUsecase } from '../domain/admin/getAccountTeams.usecase';
+import { GetTeamDetailsUsecase } from '../domain/admin/getTeamDetails.usecase';
+import { AddTeamUsecase } from '../domain/admin/addTeam.usecase';
+import { EditTeamUsecase } from '../domain/admin/editTeam.usecase';
+import { RemoveTeamUsecase } from '../domain/admin/removeTeam.usecase';
 
 @Controller('admin')
 export class AdminController {
@@ -29,11 +39,21 @@ export class AdminController {
     private editVideoUsecase: EditVideoUsecase,
     private removeVideoUsecase: RemoveVideoUsecase,
     private getAccountDetailsUsecase: GetAccountDetailsUsecase,
-    private readonly getAccountChallengesUsecase: GetAccountChallengesUsecase,
-    private readonly addChallengeUsecase: AddChallengeUsecase,
-    private readonly editChallengeUsecase: EditChallengeUsecase,
-    private readonly removeChallengeUsecase: RemoveChallengeUsecase,
-    private readonly getChallengeDetailsUsecase: GetChallengeDetailsUsecase,
+    private getAccountChallengesUsecase: GetAccountChallengesUsecase,
+    private addChallengeUsecase: AddChallengeUsecase,
+    private editChallengeUsecase: EditChallengeUsecase,
+    private removeChallengeUsecase: RemoveChallengeUsecase,
+    private getChallengeDetailsUsecase: GetChallengeDetailsUsecase,
+    private getAccountUsersUsecase: GetAccountUsersUsecase,
+    private getUserDetailsUsecase: GetUserDetailsUsecase,
+    private addUserUsecase: AddUserUsecase,
+    private editUserUsecase: EditUserUsecase,
+    private removeUserUsecase: RemoveUserUsecase,
+    private getAccountTeamsUsecase: GetAccountTeamsUsecase,
+    private getTeamDetailsUsecase: GetTeamDetailsUsecase,
+    private addTeamUsecase: AddTeamUsecase,
+    private editTeamUsecase: EditTeamUsecase,
+    private removeTeamUsecase: RemoveTeamUsecase
   ) {}
 
   @Public()
@@ -207,5 +227,89 @@ export class AdminController {
     }
   ): Promise<void> {
     return this.removeChallengeUsecase.remove(body.challengeId);
+  }
+
+  @Admin()
+  @Get('get-account-users/:accountId')
+  getAccountUsers(@Param('accountId') accountId: string): Promise<any[]> {
+    return this.getAccountUsersUsecase.get(accountId);
+  }
+
+  @Admin()
+  @Get('get-user-details/:userId')
+  getUserDetails(@Param('userId') userId: string): Promise<any> {
+    return this.getUserDetailsUsecase.get(userId);
+  }
+
+  @Admin()
+  @Post('add-user')
+  addUser(@Body() body: Record<string, any>): Promise<any> {
+    return this.addUserUsecase.add(
+      body.accountId,
+      body.email,
+      body.password,
+      body.firstName,
+      body.lastName,
+      body.gender,
+      body.birthYear
+    );
+  }
+
+  @Admin()
+  @Post('edit-user')
+  editUser(@Body() body: Record<string, any>): Promise<any> {
+    return this.editUserUsecase.edit(
+      body.userId,
+      body.email,
+      body.firstName,
+      body.lastName,
+      body.password,
+      body.gender,
+      body.birthYear
+    );
+  }
+
+  @Admin()
+  @Post('remove-user')
+  removeUser(@Body() body: Record<string, any>): Promise<void> {
+    return this.removeUserUsecase.remove(body.userId);
+  }
+
+  @Admin()
+  @Get('get-account-teams/:accountId')
+  getAccountTeams(@Param('accountId') accountId: string): Promise<any[]> {
+    return this.getAccountTeamsUsecase.get(accountId);
+  }
+
+  @Admin()
+  @Get('get-team-details/:teamId')
+  getTeamDetails(@Param('teamId') teamId: string): Promise<any> {
+    return this.getTeamDetailsUsecase.get(teamId);
+  }
+
+  @Admin()
+  @Post('add-team')
+  addTeam(@Body() body: Record<string, any>): Promise<any> {
+    return this.addTeamUsecase.add(
+      body.accountId,
+      body.name,
+      body.description
+    );
+  }
+
+  @Admin()
+  @Post('edit-team')
+  editTeam(@Body() body: Record<string, any>): Promise<any> {
+    return this.editTeamUsecase.edit(
+      body.teamId,
+      body.name,
+      body.description
+    );
+  }
+
+  @Admin()
+  @Post('remove-team')
+  removeTeam(@Body() body: Record<string, any>): Promise<void> {
+    return this.removeTeamUsecase.remove(body.teamId);
   }
 }

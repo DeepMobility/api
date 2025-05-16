@@ -20,6 +20,16 @@ import { AddChallengeUsecase } from './addChallenge.usecase';
 import { EditChallengeUsecase } from './editChallenge.usecase';
 import { RemoveChallengeUsecase } from './removeChallenge.usecase';
 import { GetChallengeDetailsUsecase } from './getChallengeDetails.usecase';
+import { GetAccountUsersUsecase } from './getAccountUsers.usecase';
+import { GetUserDetailsUsecase } from './getUserDetails.usecase';
+import { AddUserUsecase } from './addUser.usecase';
+import { EditUserUsecase } from './editUser.usecase';
+import { RemoveUserUsecase } from './removeUser.usecase';
+import { GetAccountTeamsUsecase } from './getAccountTeams.usecase';
+import { GetTeamDetailsUsecase } from './getTeamDetails.usecase';
+import { AddTeamUsecase } from './addTeam.usecase';
+import { EditTeamUsecase } from './editTeam.usecase';
+import { RemoveTeamUsecase } from './removeTeam.usecase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Account, User, Video, Challenge, Team])],
@@ -39,6 +49,16 @@ import { GetChallengeDetailsUsecase } from './getChallengeDetails.usecase';
     EditChallengeUsecase,
     RemoveChallengeUsecase,
     GetChallengeDetailsUsecase,
+    GetAccountUsersUsecase,
+    GetUserDetailsUsecase,
+    AddUserUsecase,
+    EditUserUsecase,
+    RemoveUserUsecase,
+    GetAccountTeamsUsecase,
+    GetTeamDetailsUsecase,
+    AddTeamUsecase,
+    EditTeamUsecase,
+    RemoveTeamUsecase
   ],
   exports: [
     LoginUsecase,
@@ -56,6 +76,16 @@ import { GetChallengeDetailsUsecase } from './getChallengeDetails.usecase';
     EditChallengeUsecase,
     RemoveChallengeUsecase,
     GetChallengeDetailsUsecase,
+    GetAccountUsersUsecase,
+    GetUserDetailsUsecase,
+    AddUserUsecase,
+    EditUserUsecase,
+    RemoveUserUsecase,
+    GetAccountTeamsUsecase,
+    GetTeamDetailsUsecase,
+    AddTeamUsecase,
+    EditTeamUsecase,
+    RemoveTeamUsecase
   ]
 })
 export class AdminModule {}
