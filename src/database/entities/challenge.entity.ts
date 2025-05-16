@@ -4,15 +4,21 @@ import {
   Entity,
   CreateDateColumn,
   ManyToMany,
-  ManyToOne
+  JoinTable,
+  UpdateDateColumn
 } from 'typeorm';
 import { Team } from './team.entity';
 import { User } from './user.entity';
+import { ChallengeType } from '../enums/ChallengeType';
+import { ChallengeStatus } from '../enums/ChallengeStatus';
 
 @Entity()
 export class Challenge {
   @PrimaryGeneratedColumn("uuid")
   id: string;
+
+  @Column({ name: 'account_id' })
+  accountId: string;
 
   @Column()
   title: string;
@@ -20,30 +26,61 @@ export class Challenge {
   @Column({ nullable: true })
   description: string;
 
-  @Column({ type: 'timestamptz' })
+  @Column({ name: 'association_name' })
+  associationName: string;
+
+  @Column({ name: 'association_logo_url' })
+  associationLogoUrl: string;
+
+  @Column({ type: 'timestamptz', name: 'start_date' })
   startDate: Date;
 
-  @Column({ type: 'timestamptz' })
+  @Column({ type: 'timestamptz', name: 'end_date' })
   endDate: Date;
 
-  @Column({ default: 0 })
-  points: number;
+  @Column({ type: 'enum', enum: ChallengeType, name: 'type' })
+  type: ChallengeType;
 
-  @Column({ default: false })
-  isActive: boolean;
+  @Column({ type: 'enum', enum: ChallengeStatus, name: 'status' })
+  status: ChallengeStatus;
 
-  @ManyToOne(() => User, { onDelete: 'CASCADE' })
-  creator: User;
+  @Column({ default: 0, name: 'goal_amount' })
+  goalAmount: number;
+
+  @Column({ default: 0, name: 'conversion_rate' })
+  conversionRate: number;
 
   @ManyToMany(() => Team, team => team.challenges)
+  @JoinTable({
+    name: 'challenge_team',
+    joinColumn: {
+      name: 'challenge_id',
+      referencedColumnName: 'id'
+    },
+    inverseJoinColumn: {
+      name: 'team_id',
+      referencedColumnName: 'id'
+    }
+  })
   teams: Team[];
 
-  @Column("text", { array: true, default: [] })
-  requirements: string[];
+  @ManyToMany(() => User, user => user.challenges)
+  @JoinTable({
+    name: 'challenge_user',
+    joinColumn: {
+      name: 'challenge_id',
+      referencedColumnName: 'id'
+    },
+    inverseJoinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id'
+    }
+  })
+  users: User[];
 
-  @Column("jsonb", { default: {} })
-  rules: any;
+  @UpdateDateColumn({ type: 'timestamptz', name: 'updated_at' })
+  updatedAt: Date;
 
-  @CreateDateColumn({ type: 'timestamptz' })
+  @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
   readonly createdAt: Date;
 } 

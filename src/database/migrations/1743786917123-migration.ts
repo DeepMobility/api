@@ -13,33 +13,36 @@ export class CreateTeamsAndChallenges1743786917123 implements MigrationInterface
     `);
 
     await queryRunner.query(`
-      CREATE TABLE "teams" (
+      CREATE TABLE "team" (
         "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+        "account_id" uuid NOT NULL,
         "name" character varying NOT NULL,
         "description" character varying,
         "created_at" TIMESTAMP NOT NULL DEFAULT now(),
         "updated_at" TIMESTAMP NOT NULL DEFAULT now(),
-        CONSTRAINT "PK_teams" PRIMARY KEY ("id")
+        CONSTRAINT "PK_team" PRIMARY KEY ("id")
       )
     `);
 
     await queryRunner.query(`
-      CREATE TABLE "team_members" (
+      CREATE TABLE "team_member" (
         "team_id" uuid NOT NULL,
         "user_id" uuid NOT NULL,
-        CONSTRAINT "PK_team_members" PRIMARY KEY ("team_id", "user_id")
+        CONSTRAINT "PK_team_member" PRIMARY KEY ("team_id", "user_id")
       )
     `);
 
     await queryRunner.query(`
-      CREATE TABLE "challenges" (
+      CREATE TABLE "challenge" (
         "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+        "account_id" uuid NOT NULL,
         "title" character varying NOT NULL,
-        "description" text NOT NULL,
+        "description" text,
         "association_name" character varying NOT NULL,
-        "goal_amount" decimal(10,2) NOT NULL,
+        "association_logo_url" text,
+        "goal_amount" decimal(10,2),
         "type" "public"."challenge_type_enum" NOT NULL DEFAULT 'individual',
-        "conversion_rate" decimal(10,2) NOT NULL,
+        "conversion_rate" decimal(10,2),
         "status" "public"."challenge_status_enum" NOT NULL DEFAULT 'pending',
         "start_date" TIMESTAMP NULL,
         "end_date" TIMESTAMP NULL,
@@ -50,64 +53,80 @@ export class CreateTeamsAndChallenges1743786917123 implements MigrationInterface
     `);
 
     await queryRunner.query(`
-      CREATE TABLE "challenge_teams" (
+      CREATE TABLE "challenge_team" (
         "challenge_id" uuid NOT NULL,
         "team_id" uuid NOT NULL,
-        CONSTRAINT "PK_challenge_teams" PRIMARY KEY ("challenge_id", "team_id")
+        CONSTRAINT "PK_challenge_team" PRIMARY KEY ("challenge_id", "team_id")
       )
     `);
 
     await queryRunner.query(`
-      CREATE TABLE "challenge_users" (
+      CREATE TABLE "challenge_user" (
         "challenge_id" uuid NOT NULL,
         "user_id" uuid NOT NULL,
-        CONSTRAINT "PK_challenge_users" PRIMARY KEY ("challenge_id", "user_id")
+        CONSTRAINT "PK_challenge_user" PRIMARY KEY ("challenge_id", "user_id")
       )
     `);
 
     await queryRunner.query(`
-      ALTER TABLE "team_members"
-      ADD CONSTRAINT "FK_team_members_team_id"
-      FOREIGN KEY ("team_id")
-      REFERENCES "teams"("id")
+      ALTER TABLE "team"
+      ADD CONSTRAINT "FK_team_account_id"
+      FOREIGN KEY ("account_id")
+      REFERENCES "account"("id")
       ON DELETE CASCADE
     `);
 
     await queryRunner.query(`
-      ALTER TABLE "team_members"
-      ADD CONSTRAINT "FK_team_members_user_id"
+      ALTER TABLE "challenge"
+      ADD CONSTRAINT "FK_challenge_account_id"
+      FOREIGN KEY ("account_id")
+      REFERENCES "account"("id")
+      ON DELETE CASCADE
+    `);
+
+    await queryRunner.query(`
+      ALTER TABLE "team_member"
+      ADD CONSTRAINT "FK_team_member_team_id"
+      FOREIGN KEY ("team_id")
+      REFERENCES "team"("id")
+      ON DELETE CASCADE
+    `);
+
+    await queryRunner.query(`
+      ALTER TABLE "team_member"
+      ADD CONSTRAINT "FK_team_member_user_id"
       FOREIGN KEY ("user_id")
       REFERENCES "user"("id")
       ON DELETE CASCADE
     `);
 
     await queryRunner.query(`
-      ALTER TABLE "challenge_teams"
-      ADD CONSTRAINT "FK_challenge_teams_challenge_id"
+      ALTER TABLE "challenge_team"
+      ADD CONSTRAINT "FK_challenge_team_challenge_id"
       FOREIGN KEY ("challenge_id")
-      REFERENCES "challenges"("id")
+      REFERENCES "challenge"("id")
       ON DELETE CASCADE
     `);
 
     await queryRunner.query(`
-      ALTER TABLE "challenge_teams"
-      ADD CONSTRAINT "FK_challenge_teams_team_id"
+      ALTER TABLE "challenge_team"
+      ADD CONSTRAINT "FK_challenge_team_team_id"
       FOREIGN KEY ("team_id")
-      REFERENCES "teams"("id")
+      REFERENCES "team"("id")
       ON DELETE CASCADE
     `);
 
     await queryRunner.query(`
-      ALTER TABLE "challenge_users"
-      ADD CONSTRAINT "FK_challenge_users_challenge_id"
+      ALTER TABLE "challenge_user"
+      ADD CONSTRAINT "FK_challenge_user_challenge_id"
       FOREIGN KEY ("challenge_id")
-      REFERENCES "challenges"("id")
+      REFERENCES "challenge"("id")
       ON DELETE CASCADE
     `);
 
     await queryRunner.query(`
-      ALTER TABLE "challenge_users"
-      ADD CONSTRAINT "FK_challenge_users_user_id"
+      ALTER TABLE "challenge_user"
+      ADD CONSTRAINT "FK_challenge_user_user_id"
       FOREIGN KEY ("user_id")
       REFERENCES "user"("id")
       ON DELETE CASCADE
@@ -115,17 +134,20 @@ export class CreateTeamsAndChallenges1743786917123 implements MigrationInterface
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`ALTER TABLE "challenge_users" DROP CONSTRAINT "FK_challenge_users_user_id"`);
-    await queryRunner.query(`ALTER TABLE "challenge_users" DROP CONSTRAINT "FK_challenge_users_challenge_id"`);
-    await queryRunner.query(`ALTER TABLE "challenge_teams" DROP CONSTRAINT "FK_challenge_teams_team_id"`);
-    await queryRunner.query(`ALTER TABLE "challenge_teams" DROP CONSTRAINT "FK_challenge_teams_challenge_id"`);
-    await queryRunner.query(`ALTER TABLE "team_members" DROP CONSTRAINT "FK_team_members_user_id"`);
-    await queryRunner.query(`ALTER TABLE "team_members" DROP CONSTRAINT "FK_team_members_team_id"`);
-    await queryRunner.query(`DROP TABLE "challenge_users"`);
-    await queryRunner.query(`DROP TABLE "challenge_teams"`);
-    await queryRunner.query(`DROP TABLE "challenges"`);
-    await queryRunner.query(`DROP TABLE "team_members"`);
-    await queryRunner.query(`DROP TABLE "teams"`);
+    await queryRunner.query(`ALTER TABLE "challenge_user" DROP CONSTRAINT "FK_challenge_user_user_id"`);
+    await queryRunner.query(`ALTER TABLE "challenge_user" DROP CONSTRAINT "FK_challenge_user_challenge_id"`);
+    await queryRunner.query(`ALTER TABLE "challenge_team" DROP CONSTRAINT "FK_challenge_team_team_id"`);
+    await queryRunner.query(`ALTER TABLE "challenge_team" DROP CONSTRAINT "FK_challenge_team_challenge_id"`);
+    await queryRunner.query(`ALTER TABLE "team_member" DROP CONSTRAINT "FK_team_member_user_id"`);
+    await queryRunner.query(`ALTER TABLE "team_member" DROP CONSTRAINT "FK_team_member_team_id"`);
+    await queryRunner.query(`ALTER TABLE "challenge" DROP CONSTRAINT "FK_challenge_account_id"`);
+    await queryRunner.query(`ALTER TABLE "team" DROP CONSTRAINT "FK_team_account_id"`);
+    await queryRunner.query(`DROP TABLE "challenge_user"`);
+    await queryRunner.query(`DROP TABLE "challenge_team"`);
+    await queryRunner.query(`DROP TABLE "challenge"`);
+    await queryRunner.query(`DROP TABLE "team_member"`);
+    await queryRunner.query(`DROP TABLE "team"`);
+    await queryRunner.query(`DROP TYPE "public"."challenge_status_enum"`);
     await queryRunner.query(`DROP TYPE "public"."challenge_type_enum"`);
   }
 } 

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Request } from '@nestjs/common';
 import { Public, Admin } from './auth.decorator';
 import { LoginUsecase } from '../domain/admin/login.usecase';
 import { GetAllAccountsUsecase } from '../domain/admin/getAllAccounts.usecase';
@@ -10,6 +10,11 @@ import { RemoveAccountUsecase } from 'src/domain/admin/removeAccount.usecase';
 import { GetAccountDetailsUsecase } from 'src/domain/admin/getAccountDetails.usecase';
 import { EditVideoUsecase } from 'src/domain/admin/editVideo.usecase';
 import { GetVideoDetailsUsecase } from 'src/domain/admin/getVideoDetails.usecase';
+import { GetAccountChallengesUsecase } from '../domain/admin/getAccountChallenges.usecase';
+import { AddChallengeUsecase } from '../domain/admin/addChallenge.usecase';
+import { EditChallengeUsecase } from '../domain/admin/editChallenge.usecase';
+import { RemoveChallengeUsecase } from '../domain/admin/removeChallenge.usecase';
+import { GetChallengeDetailsUsecase } from '../domain/admin/getChallengeDetails.usecase';
 
 @Controller('admin')
 export class AdminController {
@@ -24,6 +29,11 @@ export class AdminController {
     private editVideoUsecase: EditVideoUsecase,
     private removeVideoUsecase: RemoveVideoUsecase,
     private getAccountDetailsUsecase: GetAccountDetailsUsecase,
+    private readonly getAccountChallengesUsecase: GetAccountChallengesUsecase,
+    private readonly addChallengeUsecase: AddChallengeUsecase,
+    private readonly editChallengeUsecase: EditChallengeUsecase,
+    private readonly removeChallengeUsecase: RemoveChallengeUsecase,
+    private readonly getChallengeDetailsUsecase: GetChallengeDetailsUsecase,
   ) {}
 
   @Public()
@@ -110,5 +120,92 @@ export class AdminController {
   @Get('get-account-details/:accountId')
   getAccountDetails(@Param() params: any): Promise<any> {
     return this.getAccountDetailsUsecase.get(params.accountId);
+  }
+
+  @Get('get-account-challenges/:accountId')
+  getAccountChallenges(
+    @Request() request: any,
+    @Param('accountId') accountId: string
+  ): Promise<any> {
+    return this.getAccountChallengesUsecase.getAccountChallenges(accountId);
+  }
+
+  @Get('get-challenge-details/:challengeId')
+  getChallengeDetails(
+    @Param('challengeId') challengeId: string
+  ): Promise<any> {
+    return this.getChallengeDetailsUsecase.get(challengeId);
+  }
+
+  @Post('add-challenge')
+  addChallenge(
+    @Body() body: {
+      accountId: string;
+      title: string;
+      description: string;
+      type: string;
+      status: string;
+      associationName: string;
+      associationLogoUrl: string;
+      startDate: Date;
+      endDate: Date;
+      goalAmount: number;
+      conversionRate: number;
+    },
+    @Request() request: any
+  ): Promise<any> {
+    return this.addChallengeUsecase.add(
+      body.accountId,
+      body.title,
+      body.description,
+      body.type,
+      body.status,
+      body.associationName,
+      body.associationLogoUrl,
+      body.startDate,
+      body.endDate,
+      body.goalAmount,
+      body.conversionRate
+    );
+  }
+
+  @Post('edit-challenge')
+  editChallenge(
+    @Body() body: {
+      challengeId: string;
+      title: string;
+      description: string;
+      associationName: string;
+      associationLogoUrl: string;
+      goalAmount: number;
+      conversionRate: number;
+      status: string;
+      type: string;
+      startDate: Date;
+      endDate: Date;
+    }
+  ): Promise<any> {
+    return this.editChallengeUsecase.edit(
+      body.challengeId,
+      body.title,
+      body.description,
+      body.associationName,
+      body.associationLogoUrl,
+      body.goalAmount,
+      body.conversionRate,
+      body.status,
+      body.type,
+      body.startDate,
+      body.endDate
+    );
+  }
+
+  @Post('remove-challenge')
+  removeChallenge(
+    @Body() body: {
+      challengeId: string
+    }
+  ): Promise<void> {
+    return this.removeChallengeUsecase.remove(body.challengeId);
   }
 }
