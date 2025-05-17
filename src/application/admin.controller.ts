@@ -293,7 +293,8 @@ export class AdminController {
     return this.addTeamUsecase.add(
       body.accountId,
       body.name,
-      body.description
+      body.description,
+      body.members || []
     );
   }
 
@@ -303,7 +304,8 @@ export class AdminController {
     return this.editTeamUsecase.edit(
       body.teamId,
       body.name,
-      body.description
+      body.description,
+      body.members || []
     );
   }
 

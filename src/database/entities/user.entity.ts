@@ -6,8 +6,7 @@ import {
   ManyToOne,
   Unique,
   OneToMany,
-  ManyToMany,
-  JoinTable
+  ManyToMany
 } from 'typeorm';
 import { Account } from './account.entity';
 import { Challenge } from './challenge.entity';
@@ -30,17 +29,6 @@ export class User {
   challenges: Challenge[];
 
   @ManyToMany(() => Team, team => team.members)
-  @JoinTable({
-    name: 'team_member',
-    joinColumn: {
-      name: 'user_id',
-      referencedColumnName: 'id'
-    },
-    inverseJoinColumn: {
-      name: 'team_id',
-      referencedColumnName: 'id'
-    }
-  })
   teams: Team[];
 
   @Column()

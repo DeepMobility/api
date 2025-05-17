@@ -30,7 +30,7 @@ export class Team {
 
   @ManyToMany(() => User)
   @JoinTable({
-    name: 'team_members',
+    name: 'team_member',
     joinColumn: {
       name: 'team_id',
       referencedColumnName: 'id'

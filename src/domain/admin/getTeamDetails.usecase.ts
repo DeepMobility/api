@@ -12,7 +12,8 @@ export class GetTeamDetailsUsecase {
 
   async get(teamId: string): Promise<Team> {
     return this.teamsRepository.findOne({
-      where: { id: teamId }
+      where: { id: teamId },
+      relations: ['members']
     });
   }
 } 
