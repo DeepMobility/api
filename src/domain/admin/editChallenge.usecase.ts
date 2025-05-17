@@ -25,6 +25,13 @@ export class EditChallengeUsecase {
     startDate: Date,
     endDate: Date
   ): Promise<UpdateResult> {
+    // Ensure dates are set to midnight UTC
+    const startDateUTC = new Date(startDate);
+    startDateUTC.setUTCHours(0, 0, 0, 0);
+
+    const endDateUTC = new Date(endDate);
+    endDateUTC.setUTCHours(0, 0, 0, 0);
+
     return this.challengesRepository.update(challengeId, {
       title,
       description,
@@ -34,8 +41,8 @@ export class EditChallengeUsecase {
       conversionRate,
       status: ChallengeStatus[status.toUpperCase()],
       type: ChallengeType[type.toUpperCase()],
-      startDate,
-      endDate
+      startDate: startDateUTC,
+      endDate: endDateUTC
     });
   }
 } 

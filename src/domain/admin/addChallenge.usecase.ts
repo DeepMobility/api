@@ -25,6 +25,13 @@ export class AddChallengeUsecase {
     goalAmount: number,
     conversionRate: number
   ): Promise<Challenge> {  
+    // Ensure dates are set to midnight UTC
+    const startDateUTC = new Date(startDate);
+    startDateUTC.setUTCHours(0, 0, 0, 0);
+
+    const endDateUTC = new Date(endDate);
+    endDateUTC.setUTCHours(0, 0, 0, 0);
+
     return this.challengesRepository.save({
       accountId,
       title,
@@ -33,8 +40,8 @@ export class AddChallengeUsecase {
       status: ChallengeStatus[status],
       associationName,
       associationLogoUrl,
-      startDate,
-      endDate,
+      startDate: startDateUTC,
+      endDate: endDateUTC,
       goalAmount,
       conversionRate,
     });
