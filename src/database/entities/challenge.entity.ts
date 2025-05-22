@@ -3,12 +3,8 @@ import {
   Column,
   Entity,
   CreateDateColumn,
-  ManyToMany,
-  JoinTable,
   UpdateDateColumn
 } from 'typeorm';
-import { Team } from './team.entity';
-import { User } from './user.entity';
 import { ChallengeType } from '../enums/ChallengeType';
 import { ChallengeStatus } from '../enums/ChallengeStatus';
 
@@ -49,34 +45,6 @@ export class Challenge {
 
   @Column({ default: 0, name: 'conversion_rate' })
   conversionRate: number;
-
-  @ManyToMany(() => Team, team => team.challenges)
-  @JoinTable({
-    name: 'challenge_team',
-    joinColumn: {
-      name: 'challenge_id',
-      referencedColumnName: 'id'
-    },
-    inverseJoinColumn: {
-      name: 'team_id',
-      referencedColumnName: 'id'
-    }
-  })
-  teams: Team[];
-
-  @ManyToMany(() => User, user => user.challenges)
-  @JoinTable({
-    name: 'challenge_user',
-    joinColumn: {
-      name: 'challenge_id',
-      referencedColumnName: 'id'
-    },
-    inverseJoinColumn: {
-      name: 'user_id',
-      referencedColumnName: 'id'
-    }
-  })
-  users: User[];
 
   @UpdateDateColumn({ type: 'timestamptz', name: 'updated_at' })
   updatedAt: Date;

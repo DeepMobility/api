@@ -25,7 +25,6 @@ export class EditChallengeUsecase {
     startDate: Date,
     endDate: Date
   ): Promise<UpdateResult> {
-    // Ensure dates are set to midnight UTC
     const startDateUTC = new Date(startDate);
     startDateUTC.setUTCHours(0, 0, 0, 0);
 

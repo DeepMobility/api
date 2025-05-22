@@ -9,7 +9,6 @@ import {
   ManyToMany
 } from 'typeorm';
 import { Account } from './account.entity';
-import { Challenge } from './challenge.entity';
 import { Session } from './session.entity';
 import { Team } from './team.entity';
 
@@ -24,9 +23,6 @@ export class User {
 
   @OneToMany(() => Session, (session) => session.user)
   sessions: Session[];
-
-  @ManyToMany(() => Challenge, challenge => challenge.users)
-  challenges: Challenge[];
 
   @ManyToMany(() => Team, team => team.members)
   teams: Team[];

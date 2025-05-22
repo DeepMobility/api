@@ -25,7 +25,6 @@ export class AddChallengeUsecase {
     goalAmount: number,
     conversionRate: number
   ): Promise<Challenge> {  
-    // Ensure dates are set to midnight UTC
     const startDateUTC = new Date(startDate);
     startDateUTC.setUTCHours(0, 0, 0, 0);
 

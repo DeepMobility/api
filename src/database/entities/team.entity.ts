@@ -9,7 +9,6 @@ import {
   ManyToOne,
   UpdateDateColumn
 } from 'typeorm';
-import { Challenge } from './challenge.entity';
 import { User } from './user.entity';
 import { Account } from './account.entity';
 
@@ -28,22 +27,19 @@ export class Team {
   @JoinColumn({ name: 'account_id' })
   account: Account;
 
-  @ManyToMany(() => User)
+  @ManyToMany(() => User, user => user.teams)
   @JoinTable({
     name: 'team_member',
-    joinColumn: {
+    joinColumns: [{
       name: 'team_id',
       referencedColumnName: 'id'
-    },
-    inverseJoinColumn: {
+    }],
+    inverseJoinColumns: [{
       name: 'user_id',
       referencedColumnName: 'id'
-    }
+    }]
   })
   members: User[];
-
-  @ManyToMany(() => Challenge, challenge => challenge.teams)
-  challenges: Challenge[];
 
   @UpdateDateColumn({ type: 'timestamptz', name: 'updated_at' })
   updatedAt: Date;
