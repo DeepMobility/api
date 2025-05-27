@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LessThan, MoreThan, Repository } from 'typeorm';
+import { In, LessThan, MoreThan, Repository } from 'typeorm';
 import { User } from '../../database/entities/user.entity';
 import { Video } from '../../database/entities/video.entity';
 import { Session } from 'src/database/entities/session.entity';
@@ -74,15 +74,15 @@ export class GetMyDashboardUsecase {
 
     const currentChallenge = await this.challengesRepository.findOne({
       where: {
-        status: ChallengeStatus.ACTIVE,
+        status: In([ChallengeStatus.ACTIVE, ChallengeStatus.COMPLETED]),
         startDate: LessThan(today),
-        endDate: MoreThan(today),
+        endDate: MoreThan(new Date(today.getTime() - (Number(process.env.CHALLENGE_VISIBILITY_AFTER_END_DURATION) || 0) * 24 * 60 * 60 * 1000)),
       },
     });
 
     const challengeProgress = currentChallenge ? {
       totalPoints: 0,
-      goalPoints: currentChallenge.goalAmount,
+      goalAmount: currentChallenge.goalAmount,
       usersInfo: [],
       teamsInfo: [],
       currentUserInfo: null,
@@ -107,7 +107,7 @@ export class GetMyDashboardUsecase {
         );
 
         const userPoints = userSessions.reduce((total, session) =>
-          total + Math.floor(session.video.duration / 60), 0
+          total + Math.floor(session.video.duration / 60 / 6), 0
         );
 
         userPointsMap.set(user.id, userPoints);
