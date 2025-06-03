@@ -6,7 +6,7 @@ import {
   OneToMany
 } from 'typeorm';
 import { User } from './user.entity';
-
+import { Team } from './team.entity';
 @Entity()
 export class Account {
   @PrimaryGeneratedColumn("uuid")
@@ -26,6 +26,9 @@ export class Account {
 
   @OneToMany(() => User, (user) => user.account)
   users: User[];
+
+  @OneToMany(() => Team, (team) => team.account)
+  teams: Team[];
 
   @CreateDateColumn({ type: 'timestamptz' })
   readonly createdAt: Date;

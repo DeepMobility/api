@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, LessThan, MoreThan, Repository } from 'typeorm';
 import { User } from '../../database/entities/user.entity';
 import { Video } from '../../database/entities/video.entity';
 import { Session } from 'src/database/entities/session.entity';
+import { Challenge } from 'src/database/entities/challenge.entity';
+import { ChallengeStatus } from 'src/database/enums/ChallengeStatus';
 
 @Injectable()
 export class GetMyDashboardUsecase {
@@ -12,6 +14,8 @@ export class GetMyDashboardUsecase {
     private usersRepository: Repository<User>,
     @InjectRepository(Video)
     private videosRepository: Repository<Video>,
+    @InjectRepository(Challenge)
+    private challengesRepository: Repository<Challenge>
   ) {}
 
   async get(
@@ -68,6 +72,95 @@ export class GetMyDashboardUsecase {
 
     const yesterdayActivity = orderedDailySessions.length ? orderedDailySessions.at(-1).createdAt.toDateString() === yesterday.toDateString() : false;
 
+    const currentChallenge = await this.challengesRepository.findOne({
+      where: {
+        status: In([ChallengeStatus.ACTIVE, ChallengeStatus.COMPLETED]),
+        startDate: LessThan(today),
+        endDate: MoreThan(new Date(today.getTime() - (Number(process.env.CHALLENGE_VISIBILITY_AFTER_END_DURATION) || 0) * 24 * 60 * 60 * 1000)),
+      },
+    });
+
+    const challengeProgress = currentChallenge ? {
+      totalPoints: 0,
+      goalAmount: currentChallenge.goalAmount,
+      usersInfo: [],
+      teamsInfo: [],
+      currentUserInfo: null,
+      currentUserTeamInfo: null,
+      participantsCount: 0
+    } : null;
+
+    if (currentChallenge) {
+      const allUsers = await this.usersRepository.find({
+        where: { account: { id: currentChallenge.accountId } },
+        relations: { sessions: { video: true }, teams: true }
+      });
+      challengeProgress.participantsCount = allUsers.length;
+
+      const userPointsMap = new Map<string, number>();
+      const teamPointsMap = new Map<string, number>();
+
+      allUsers.forEach(user => {
+        const userSessions = user.sessions.filter(session =>
+          session.createdAt >= currentChallenge.startDate &&
+          session.createdAt <= currentChallenge.endDate
+        );
+
+        const userPoints = userSessions.reduce((total, session) =>
+          total + Math.floor(session.video.duration / 60), 0
+        );
+
+        userPointsMap.set(user.id, userPoints);
+
+        challengeProgress.totalPoints += userPoints;
+
+        if (user.teams?.length > 0) {
+          const teamId = user.teams[0].id;
+          const currentTeamPoints = teamPointsMap.get(teamId) || 0;
+          teamPointsMap.set(teamId, currentTeamPoints + userPoints);
+        }
+      });
+
+      const userRankings = Array.from(userPointsMap.entries())
+        .map(([userId, points]) => ({
+          userId,
+          name: allUsers.find(u => u.id === userId)?.firstName || 'Unknown User',
+          points,
+          rank: 0
+        }))
+        .sort((a, b) => b.points - a.points);
+
+      userRankings.forEach((user, index) => {
+        user.rank = index + 1;
+      });
+
+      const teamRankings = Array.from(teamPointsMap.entries())
+        .map(([teamId, points]) => ({
+          teamId,
+          name: allUsers.find(u => u.teams?.some(t => t.id === teamId))?.teams[0]?.name || 'Unknown Team',
+          membersCount: allUsers.filter(u => u.teams?.some(t => t.id === teamId)).length,
+          points,
+          rank: 0
+        }))
+        .sort((a, b) => b.points - a.points);
+
+      teamRankings.forEach((team, index) => {
+        team.rank = index + 1;
+      });
+
+      challengeProgress.usersInfo = userRankings;
+      challengeProgress.teamsInfo = teamRankings;
+
+      const currentUser = userRankings.find(ranking => ranking.userId === userId);
+      const currentUserTeam = allUsers.find(u => u.id === userId)?.teams[0];
+      const currentUserTeamInfo = currentUserTeam 
+        ? teamRankings.find(ranking => ranking.teamId === currentUserTeam.id)
+        : null;
+
+      challengeProgress.currentUserInfo = currentUser || null;
+      challengeProgress.currentUserTeamInfo = currentUserTeamInfo;
+    }
+
     return {
       name: user.firstName,
       isSurveyDue,
@@ -81,6 +174,12 @@ export class GetMyDashboardUsecase {
       dailyActivity,
       yesterdayActivity,
       daysInArow: user.daysInARow,
+      ...(currentChallenge && {
+        currentChallenge: {
+          ...currentChallenge,
+          progress: challengeProgress
+        }
+      })
     };
   }
 }

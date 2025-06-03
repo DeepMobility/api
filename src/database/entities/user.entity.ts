@@ -5,10 +5,12 @@ import {
   CreateDateColumn,
   ManyToOne,
   Unique,
-  OneToMany
+  OneToMany,
+  ManyToMany
 } from 'typeorm';
 import { Account } from './account.entity';
 import { Session } from './session.entity';
+import { Team } from './team.entity';
 
 @Unique(["account", "email"])
 @Entity()
@@ -21,6 +23,9 @@ export class User {
 
   @OneToMany(() => Session, (session) => session.user)
   sessions: Session[];
+
+  @ManyToMany(() => Team, team => team.members)
+  teams: Team[];
 
   @Column()
   email: string;

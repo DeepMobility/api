@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Account } from '../../database/entities/account.entity';
+import { Challenge } from '../../database/entities/challenge.entity';
 import { User } from '../../database/entities/user.entity';
 import { Video } from '../../database/entities/video.entity';
 import { LoginUsecase } from './login.usecase';
@@ -18,7 +19,7 @@ import { NewPasswordUsecase } from './newPassword.usecase';
 import { AnswerSurveyUsecase } from './answerSurvey.usecase';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Account, User, Video, Session])],
+  imports: [TypeOrmModule.forFeature([Account, User, Video, Session, Challenge])],
   providers: [
     GetAccountLogoUrlUsecase,
     LoginUsecase,
