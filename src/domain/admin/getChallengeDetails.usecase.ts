@@ -40,11 +40,6 @@ export class GetChallengeDetailsUsecase {
     if (!challenge) {
       throw new NotFoundException('Challenge not found');
     }
-
-    const users = await this.usersRepository.find({
-      where: { account: { id: challenge.accountId } },
-      relations: { sessions: { video: true }, teams: true }
-    });
     
     const challengeWithProgress: ChallengeWithProgress = {
       ...challenge,

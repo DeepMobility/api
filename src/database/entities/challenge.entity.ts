@@ -43,7 +43,7 @@ export class Challenge {
   @Column({ default: 0, name: 'goal_amount' })
   goalAmount: number;
 
-  @Column({ default: 0, name: 'conversion_rate' })
+  @Column({ type: 'decimal', precision: 100, scale: 2, default: 0, name: 'conversion_rate' })
   conversionRate: number;
 
   @UpdateDateColumn({ type: 'timestamptz', name: 'updated_at' })

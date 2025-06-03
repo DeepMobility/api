@@ -107,7 +107,7 @@ export class GetMyDashboardUsecase {
         );
 
         const userPoints = userSessions.reduce((total, session) =>
-          total + Math.floor(session.video.duration / 60 / 6), 0
+          total + Math.floor(session.video.duration / 60), 0
         );
 
         userPointsMap.set(user.id, userPoints);
