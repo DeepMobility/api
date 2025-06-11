@@ -22,7 +22,7 @@ export class GetMyDashboardUsecase {
     userId: string,
   ): Promise<any> {
     const user = await this.usersRepository.findOne({
-      relations: { sessions: { video: true} },
+      relations: { sessions: { video: true}, account: true },
       where: { id: userId },
     });
 
@@ -74,6 +74,7 @@ export class GetMyDashboardUsecase {
 
     const currentChallenge = await this.challengesRepository.findOne({
       where: {
+        accountId: user.account.id,
         status: In([ChallengeStatus.ACTIVE, ChallengeStatus.COMPLETED]),
         startDate: LessThan(today),
         endDate: MoreThan(new Date(today.getTime() - (Number(process.env.CHALLENGE_VISIBILITY_AFTER_END_DURATION) || 0) * 24 * 60 * 60 * 1000)),
