@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, LessThan, MoreThan, Repository } from 'typeorm';
 import { User } from '../../database/entities/user.entity';
@@ -25,6 +25,10 @@ export class GetMyDashboardUsecase {
       relations: { sessions: { video: true}, account: true },
       where: { id: userId },
     });
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
 
     const videos = await this.videosRepository.find();
 
