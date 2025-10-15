@@ -63,6 +63,9 @@ export class User {
   @Column({ default: 0 })
   daysInARow: number;
 
+  @Column({ name: 'reminder_time', nullable: true })
+  reminderTime: string;
+
   @CreateDateColumn({ type: 'timestamptz' })
   readonly createdAt: Date;
 }

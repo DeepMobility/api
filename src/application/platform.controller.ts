@@ -12,6 +12,8 @@ import { GetAccountLogoUrlUsecase } from 'src/domain/platform/getAccountLogoUrl.
 import { ResetPasswordUsecase } from 'src/domain/platform/resetPassword.usecase';
 import { NewPasswordUsecase } from 'src/domain/platform/newPassword.usecase';
 import { AnswerSurveyUsecase } from 'src/domain/platform/answerSurvey.usecase';
+import { UpdateMyReminderTimeUsecase } from 'src/domain/platform/updateMyReminderTime.usecase';
+import { GetMyReminderTimeUsecase } from 'src/domain/platform/getMyReminderTime.usecase';
 
 @Controller('platform')
 export class PlatformController {
@@ -28,6 +30,8 @@ export class PlatformController {
     private endSessionUsecase: EndSessionUsecase,
     private getAccountLogoUrlUsecase: GetAccountLogoUrlUsecase,
     private answerSurveyUsecase: AnswerSurveyUsecase,
+    private updateMyReminderTimeUsecase: UpdateMyReminderTimeUsecase,
+    private getMyReminderTimeUsecase: GetMyReminderTimeUsecase,
   ) {}
 
   @Public()
@@ -138,5 +142,21 @@ export class PlatformController {
       request.user.id,
       body.survey
     );
+  }
+
+  @Post('update-my-reminder-time')
+  updateMyReminderTime(
+    @Body() body: Record<string, any>,
+    @Request() request: any
+  ): Promise<any> {
+    return this.updateMyReminderTimeUsecase.update(
+      request.user.id,
+      body.reminderTime
+    );
+  }
+
+  @Get('get-my-reminder-time')
+  getMyReminderTime(@Request() request: any): Promise<any> {
+    return this.getMyReminderTimeUsecase.get(request.user.id);
   }
 }
