@@ -179,6 +179,7 @@ export class GetMyDashboardUsecase {
       dailyActivity,
       yesterdayActivity,
       daysInArow: user.daysInARow,
+      hasReminderConfigured: !!user.reminderTime,
       ...(currentChallenge && {
         currentChallenge: {
           ...currentChallenge,

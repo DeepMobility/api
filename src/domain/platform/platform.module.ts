@@ -17,6 +17,8 @@ import { GetAccountLogoUrlUsecase } from './getAccountLogoUrl.usecase';
 import { ResetPasswordUsecase } from './resetPassword.usecase';
 import { NewPasswordUsecase } from './newPassword.usecase';
 import { AnswerSurveyUsecase } from './answerSurvey.usecase';
+import { UpdateMyReminderTimeUsecase } from './updateMyReminderTime.usecase';
+import { GetMyReminderTimeUsecase } from './getMyReminderTime.usecase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Account, User, Video, Session, Challenge])],
@@ -33,6 +35,8 @@ import { AnswerSurveyUsecase } from './answerSurvey.usecase';
     StartSessionUsecase,
     EndSessionUsecase,
     AnswerSurveyUsecase,
+    UpdateMyReminderTimeUsecase,
+    GetMyReminderTimeUsecase,
   ],
   exports: [
     GetAccountLogoUrlUsecase,
@@ -47,6 +51,8 @@ import { AnswerSurveyUsecase } from './answerSurvey.usecase';
     StartSessionUsecase,
     EndSessionUsecase,
     AnswerSurveyUsecase,
+    UpdateMyReminderTimeUsecase,
+    GetMyReminderTimeUsecase,
   ]
 })
 export class PlatformModule {}
