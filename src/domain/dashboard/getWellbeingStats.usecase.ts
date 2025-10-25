@@ -13,7 +13,7 @@ export class GetWellbeingStatsUsecase {
     private sessionsRepository: Repository<Session>,
   ) {}
 
-  async execute(accountId: string, period: 'day' | 'week' | 'month' = 'month'): Promise<any> {
+  async execute(accountId: string, period: 'day' | 'week' | 'month' = 'month', teamId?: string): Promise<any> {
     const now = new Date();
     let startDate: Date;
 
@@ -35,15 +35,36 @@ export class GetWellbeingStatsUsecase {
         startDate.setMonth(now.getMonth() - 1);
     }
 
-    const sessions = await this.sessionsRepository
+    let userIds: string[] | undefined;
+
+    if (teamId) {
+      const teamUsers = await this.usersRepository
+        .createQueryBuilder('user')
+        .innerJoin('user.teams', 'team')
+        .leftJoinAndSelect('user.account', 'account')
+        .where('team.id = :teamId', { teamId })
+        .andWhere('account.id = :accountId', { accountId })
+        .getMany();
+
+      userIds = teamUsers.map(user => user.id);
+    }
+
+    let queryBuilder = this.sessionsRepository
       .createQueryBuilder('session')
       .leftJoinAndSelect('session.user', 'user')
       .leftJoinAndSelect('user.account', 'account')
       .leftJoinAndSelect('session.video', 'video')
       .where('account.id = :accountId', { accountId })
       .andWhere('session.createdAt >= :startDate', { startDate })
-      .andWhere('session.question IS NOT NULL')
-      .getMany();
+      .andWhere('session.question IS NOT NULL');
+
+    if (userIds && userIds.length > 0) {
+      queryBuilder = queryBuilder.andWhere('user.id IN (:...userIds)', { userIds });
+    } else if (teamId) {
+      queryBuilder = queryBuilder.andWhere('1 = 0');
+    }
+
+    const sessions = await queryBuilder.getMany();
 
     const energySessions = sessions.filter(s => s.beforeRating && s.afterRating);
     
@@ -93,9 +114,18 @@ export class GetWellbeingStatsUsecase {
       };
     });
 
-    const users = await this.usersRepository.find({
-      where: { account: { id: accountId } },
-    });
+    let usersQueryBuilder = this.usersRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.account', 'account')
+      .where('account.id = :accountId', { accountId });
+
+    if (teamId) {
+      usersQueryBuilder = usersQueryBuilder
+        .innerJoin('user.teams', 'team')
+        .andWhere('team.id = :teamId', { teamId });
+    }
+
+    const users = await usersQueryBuilder.getMany();
 
     const painfulBodyParts: { [key: string]: number } = {};
     users.forEach(user => {
@@ -124,9 +154,9 @@ export class GetWellbeingStatsUsecase {
 
     return {
       energyStats,
-      dailyEnergyEvolution: dailyEnergyEvolution.filter(d => d.averageBeforeRating !== null),
-      painfulBodyParts: painfulBodyPartsArray,
-      bodyPartsWorked: bodyPartsWorkedArray,
+      dailyEnergyEvolution: dailyEnergyEvolution || [],
+      painfulBodyParts: painfulBodyPartsArray || [],
+      bodyPartsWorked: bodyPartsWorkedArray || [],
       period,
     };
   }

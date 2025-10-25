@@ -61,7 +61,8 @@ export class DashboardController {
   @Get('wellbeing-stats')
   getWellbeingStats(
     @Req() request: any,
-    @Query('period') period: 'day' | 'week' | 'month' = 'month'
+    @Query('period') period: 'day' | 'week' | 'month' = 'month',
+    @Query('teamId') teamId?: string
   ) {
     const user = request.user;
     
@@ -69,7 +70,7 @@ export class DashboardController {
       throw new UnauthorizedException();
     }
 
-    return this.getWellbeingStatsUsecase.execute(user.accountId, period);
+    return this.getWellbeingStatsUsecase.execute(user.accountId, period, teamId);
   }
 
   @Post('change-password')

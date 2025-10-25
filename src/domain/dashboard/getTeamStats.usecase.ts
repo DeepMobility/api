@@ -49,10 +49,10 @@ export class GetTeamStatsUsecase {
       const activePercentage = totalMembers > 0 ? (activeMembers / totalMembers) * 100 : 0;
 
       const totalMinutes = teamSessions.reduce((sum, session) => {
-        return sum + (session.video?.duration || 0);
+        return sum + (session.video?.duration || 0) / 60;
       }, 0);
 
-      const averageMinutes = totalMembers > 0 ? totalMinutes / totalMembers : 0;
+      const averageMinutes = activeMembers > 0 ? totalMinutes / activeMembers : 0;
 
       const longestStreak = Math.max(...members.map(m => m.daysInARow), 0);
 
@@ -63,8 +63,8 @@ export class GetTeamStatsUsecase {
         totalMembers,
         activeMembers,
         activePercentage: Math.round(activePercentage * 10) / 10,
-        totalMinutes: Math.round(totalMinutes),
-        averageMinutes: Math.round(averageMinutes),
+        totalMinutes: Math.round(totalMinutes * 10) / 10,
+        averageMinutes: Math.round(averageMinutes * 10) / 10,
         longestStreak,
       };
     });

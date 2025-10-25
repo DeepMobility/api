@@ -46,10 +46,10 @@ export class GetCompanyStatsUsecase {
     const activeUsersPercentage = totalUsers > 0 ? (activeUsers / totalUsers) * 100 : 0;
 
     const totalMinutes = periodSessions.reduce((sum, session) => {
-      return sum + (session.video?.duration || 0);
+      return sum + (session.video?.duration || 0) / 60;
     }, 0);
 
-    const averageMinutesPerEmployee = totalUsers > 0 ? totalMinutes / totalUsers : 0;
+    const averageMinutesPerEmployee = activeUsers > 0 ? totalMinutes / activeUsers : 0;
 
     const longestStreak = Math.max(...users.map(user => user.daysInARow), 0);
     const last30Days = Array.from({ length: 30 }, (_, i) => {
@@ -73,7 +73,7 @@ export class GetCompanyStatsUsecase {
         date: date.toISOString().split('T')[0],
         sessions: sessionsOnDay.length,
         users: new Set(sessionsOnDay.map(s => s.user)).size,
-        minutes: sessionsOnDay.reduce((sum, s) => sum + (s.video?.duration || 0), 0),
+        minutes: Math.round(sessionsOnDay.reduce((sum, s) => sum + (s.video?.duration || 0) / 60, 0) * 10) / 10,
       };
     });
 
@@ -81,8 +81,8 @@ export class GetCompanyStatsUsecase {
       activeUsersPercentage: Math.round(activeUsersPercentage * 10) / 10,
       activeUsers,
       totalUsers,
-      totalMinutes: Math.round(totalMinutes),
-      averageMinutesPerEmployee: Math.round(averageMinutesPerEmployee),
+      totalMinutes: Math.round(totalMinutes * 10) / 10,
+      averageMinutesPerEmployee: Math.round(averageMinutesPerEmployee * 10) / 10,
       longestStreak,
       period,
       dailyActivity,
