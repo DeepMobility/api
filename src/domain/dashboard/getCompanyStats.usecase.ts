@@ -52,6 +52,36 @@ export class GetCompanyStatsUsecase {
     const averageMinutesPerEmployee = activeUsers > 0 ? totalMinutes / activeUsers : 0;
 
     const longestStreak = Math.max(...users.map(user => user.daysInARow), 0);
+    
+    const allSessions = users.flatMap(user => user.sessions);
+    
+    const videoWatchCounts: { [key: number]: number } = {};
+    allSessions.forEach(session => {
+      if (session.video?.id) {
+        videoWatchCounts[session.video.id] = (videoWatchCounts[session.video.id] || 0) + 1;
+      }
+    });
+    
+    const mostWatchedVideos = Object.entries(videoWatchCounts)
+      .sort(([, countA], [, countB]) => countB - countA)
+      .slice(0, 3)
+      .map(([videoId, count]) => {
+        const video = allSessions.find(s => s.video?.id === Number(videoId))?.video;
+        return {
+          id: Number(videoId),
+          name: video?.name || 'Vidéo inconnue',
+          watchedCount: count,
+        };
+      });
+    
+    const sessionHours = allSessions
+      .filter(s => s.createdAt)
+      .map(session => session.createdAt.getHours());
+    
+    const averageHour = sessionHours.length > 0
+      ? sessionHours.reduce((a, b) => a + b, 0) / sessionHours.length
+      : 0;
+    
     const last30Days = Array.from({ length: 30 }, (_, i) => {
       const date = new Date(now);
       date.setDate(now.getDate() - (29 - i));
@@ -77,6 +107,13 @@ export class GetCompanyStatsUsecase {
       };
     });
 
+    const totalTimeWatchedAllTime = allSessions.reduce((sum, s) => sum + (s.video?.duration || 0) / 60, 0);
+    
+    const thirtyDaysAgo = new Date(now);
+    thirtyDaysAgo.setDate(now.getDate() - 30);
+    const lastMonthSessions = allSessions.filter(s => s.createdAt >= thirtyDaysAgo);
+    const lastMonthTimeWatched = lastMonthSessions.reduce((sum, s) => sum + (s.video?.duration || 0) / 60, 0);
+
     return {
       activeUsersPercentage: Math.round(activeUsersPercentage * 10) / 10,
       activeUsers,
@@ -84,6 +121,10 @@ export class GetCompanyStatsUsecase {
       totalMinutes: Math.round(totalMinutes * 10) / 10,
       averageMinutesPerEmployee: Math.round(averageMinutesPerEmployee * 10) / 10,
       longestStreak,
+      totalTimeWatchedAllTime: Math.round(totalTimeWatchedAllTime * 10) / 10,
+      lastMonthTimeWatched: Math.round(lastMonthTimeWatched * 10) / 10,
+      mostWatchedVideos,
+      averageHour: Math.round(averageHour * 10) / 10,
       period,
       dailyActivity,
     };
