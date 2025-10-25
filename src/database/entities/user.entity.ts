@@ -66,6 +66,9 @@ export class User {
   @Column({ name: 'reminder_time', nullable: true })
   reminderTime: string;
 
+  @Column({ name: 'has_dashboard_access', default: false })
+  hasDashboardAccess: boolean;
+
   @CreateDateColumn({ type: 'timestamptz' })
   readonly createdAt: Date;
 }

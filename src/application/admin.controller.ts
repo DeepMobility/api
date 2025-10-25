@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Request } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Request } from '@nestjs/common';
 import { Public, Admin } from './auth.decorator';
 import { LoginUsecase } from '../domain/admin/login.usecase';
 import { GetAllAccountsUsecase } from '../domain/admin/getAllAccounts.usecase';
@@ -251,7 +251,8 @@ export class AdminController {
       body.firstName,
       body.lastName,
       body.gender,
-      body.birthYear
+      body.birthYear,
+      body.hasDashboardAccess
     );
   }
 
@@ -265,7 +266,8 @@ export class AdminController {
       body.lastName,
       body.password,
       body.gender,
-      body.birthYear
+      body.birthYear,
+      body.hasDashboardAccess
     );
   }
 
