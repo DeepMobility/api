@@ -5,6 +5,7 @@ import {
   Post,
   Query,
   Req,
+  Param,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Public } from './auth.decorator';
@@ -13,6 +14,7 @@ import { GetCompanyStatsUsecase } from '../domain/dashboard/getCompanyStats.usec
 import { GetTeamStatsUsecase } from '../domain/dashboard/getTeamStats.usecase';
 import { GetWellbeingStatsUsecase } from '../domain/dashboard/getWellbeingStats.usecase';
 import { ChangePasswordUsecase } from '../domain/dashboard/changePassword.usecase';
+import { GetAccountLogoUrlUsecase } from '../domain/platform/getAccountLogoUrl.usecase';
 
 @Controller('dashboard')
 export class DashboardController {
@@ -22,7 +24,14 @@ export class DashboardController {
     private getTeamStatsUsecase: GetTeamStatsUsecase,
     private getWellbeingStatsUsecase: GetWellbeingStatsUsecase,
     private changePasswordUsecase: ChangePasswordUsecase,
+    private getAccountLogoUrlUsecase: GetAccountLogoUrlUsecase,
   ) {}
+
+  @Public()
+  @Get('get-account-logo-url/:accountHost')
+  getAccountLogoUrl(@Param() params: any): Promise<any> {
+    return this.getAccountLogoUrlUsecase.get(params.accountHost);
+  }
 
   @Public()
   @Post('login')
