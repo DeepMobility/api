@@ -14,11 +14,13 @@ export class LoginUsecase {
   ) {}
 
   async login(accountHost: string, email: string, password: string): Promise<any> {
+    const actualAccountHost = accountHost.replace('.dashboard', '');
+
     const user = await this.usersRepository.findOne({
       relations: { account: true },
       where: {
         email,
-        account: { host: accountHost }
+        account: { host: actualAccountHost }
       },
     })
 
