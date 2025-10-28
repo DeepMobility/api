@@ -30,7 +30,8 @@ export class DashboardController {
   @Public()
   @Get('get-account-logo-url/:accountHost')
   getAccountLogoUrl(@Param() params: any): Promise<any> {
-    return this.getAccountLogoUrlUsecase.get(params.accountHost);
+    const actualAccountHost = params.accountHost.replace('.dashboard', '');
+    return this.getAccountLogoUrlUsecase.get(actualAccountHost);
   }
 
   @Public()
