@@ -69,6 +69,9 @@ export class User {
   @Column({ name: 'has_dashboard_access', default: false })
   hasDashboardAccess: boolean;
 
+  @Column({ name: 'is_admin', default: false })
+  isAdmin: boolean;
+
   @CreateDateColumn({ type: 'timestamptz' })
   readonly createdAt: Date;
 }

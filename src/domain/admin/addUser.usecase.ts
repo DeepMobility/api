@@ -19,7 +19,8 @@ export class AddUserUsecase {
     lastName: string,
     gender: string,
     birthYear: number,
-    hasDashboardAccess?: boolean
+    hasDashboardAccess?: boolean,
+    isAdmin?: boolean
   ): Promise<User> {
     const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -33,7 +34,8 @@ export class AddUserUsecase {
       lastName,
       gender,
       birthYear,
-      hasDashboardAccess: hasDashboardAccess || false
+      hasDashboardAccess: hasDashboardAccess || false,
+      isAdmin: isAdmin || false
     });
   }
 }

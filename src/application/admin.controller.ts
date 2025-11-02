@@ -252,7 +252,8 @@ export class AdminController {
       body.lastName,
       body.gender,
       body.birthYear,
-      body.hasDashboardAccess
+      body.hasDashboardAccess,
+      body.isAdmin
     );
   }
 
@@ -267,7 +268,8 @@ export class AdminController {
       body.password,
       body.gender,
       body.birthYear,
-      body.hasDashboardAccess
+      body.hasDashboardAccess,
+      body.isAdmin
     );
   }
 

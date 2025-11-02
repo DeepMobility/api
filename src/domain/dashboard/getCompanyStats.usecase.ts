@@ -12,7 +12,7 @@ export class GetCompanyStatsUsecase {
 
   async execute(accountId: string, period: 'day' | 'week' | 'month' = 'month'): Promise<any> {
     const users = await this.usersRepository.find({
-      where: { account: { id: accountId } },
+      where: { account: { id: accountId }, isAdmin: false },
       relations: ['sessions', 'sessions.video'],
     });
 

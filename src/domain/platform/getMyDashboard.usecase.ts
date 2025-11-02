@@ -97,7 +97,7 @@ export class GetMyDashboardUsecase {
 
     if (currentChallenge) {
       const allUsers = await this.usersRepository.find({
-        where: { account: { id: currentChallenge.accountId } },
+        where: { account: { id: currentChallenge.accountId }, isAdmin: false },
         relations: { sessions: { video: true }, teams: true }
       });
       challengeProgress.participantsCount = allUsers.length;

@@ -44,6 +44,7 @@ export class GetWellbeingStatsUsecase {
         .leftJoinAndSelect('user.account', 'account')
         .where('team.id = :teamId', { teamId })
         .andWhere('account.id = :accountId', { accountId })
+        .andWhere('user.isAdmin = :isAdmin', { isAdmin: false })
         .getMany();
 
       userIds = teamUsers.map(user => user.id);
@@ -56,7 +57,8 @@ export class GetWellbeingStatsUsecase {
       .leftJoinAndSelect('session.video', 'video')
       .where('account.id = :accountId', { accountId })
       .andWhere('session.createdAt >= :startDate', { startDate })
-      .andWhere('session.question IS NOT NULL');
+      .andWhere('session.question IS NOT NULL')
+      .andWhere('user.isAdmin = :isAdmin', { isAdmin: false });
 
     if (userIds && userIds.length > 0) {
       queryBuilder = queryBuilder.andWhere('user.id IN (:...userIds)', { userIds });
@@ -117,7 +119,8 @@ export class GetWellbeingStatsUsecase {
     let usersQueryBuilder = this.usersRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.account', 'account')
-      .where('account.id = :accountId', { accountId });
+      .where('account.id = :accountId', { accountId })
+      .andWhere('user.isAdmin = :isAdmin', { isAdmin: false });
 
     if (teamId) {
       usersQueryBuilder = usersQueryBuilder
