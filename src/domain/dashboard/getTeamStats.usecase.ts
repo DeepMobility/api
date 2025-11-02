@@ -38,7 +38,7 @@ export class GetTeamStatsUsecase {
     }
 
     const teamStats = teams.map(team => {
-      const members = team.members || [];
+      const members = (team.members || []).filter(member => !member.isAdmin);
       const totalMembers = members.length;
 
       const teamSessions = members.flatMap(member =>

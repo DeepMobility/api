@@ -19,7 +19,8 @@ export class EditUserUsecase {
     password?: string,
     gender?: string,
     birthYear?: number,
-    hasDashboardAccess?: boolean
+    hasDashboardAccess?: boolean,
+    isAdmin?: boolean
   ): Promise<UpdateResult> {
     const hashedPassword = password ? await bcrypt.hash(password, 10) : undefined;
 
@@ -30,7 +31,8 @@ export class EditUserUsecase {
       gender,
       birthYear,
       ...(hashedPassword && { hashedPassword }),
-      ...(hasDashboardAccess !== undefined && { hasDashboardAccess })
+      ...(hasDashboardAccess !== undefined && { hasDashboardAccess }),
+      ...(isAdmin !== undefined && { isAdmin })
     });
   }
 }
