@@ -2,6 +2,8 @@ import { Request, Body, Controller, Get, Post, Param } from '@nestjs/common';
 import { Public } from './auth.decorator';
 import { LoginUsecase } from '../domain/platform/login.usecase';
 import { RegisterUsecase } from '../domain/platform/register.usecase';
+import { AutologinUsecase } from '../domain/platform/autologin.usecase';
+import { ResendConfirmationUsecase } from '../domain/platform/resendConfirmation.usecase';
 import { UpdateMyJobTypeUsecase } from '../domain/platform/updateMyJobType.usecase';
 import { UpdateMyPainfulBodyParts } from 'src/domain/platform/updateMyPainfulBodyParts.usecase';
 import { UpdateMyOtherThematicInterests } from 'src/domain/platform/updateMyOtherThematicInterests.usecase';
@@ -20,6 +22,8 @@ export class PlatformController {
   constructor(
     private loginUsecase: LoginUsecase,
     private registerUsecase: RegisterUsecase,
+    private autologinUsecase: AutologinUsecase,
+    private resendConfirmationUsecase: ResendConfirmationUsecase,
     private resetPasswordUsecase: ResetPasswordUsecase,
     private newPasswordUsecase: NewPasswordUsecase,
     private updateMyJobTypeUsecase: UpdateMyJobTypeUsecase,
@@ -58,6 +62,18 @@ export class PlatformController {
       body.gender,
       body.birthYear,
     );
+  }
+
+  @Public()
+  @Post('autologin')
+  autologin(@Body() body: Record<string, any>): Promise<any> {
+    return this.autologinUsecase.autologin(body.token);
+  }
+
+  @Public()
+  @Post('resend-confirmation')
+  resendConfirmation(@Body() body: Record<string, any>): Promise<any> {
+    return this.resendConfirmationUsecase.resend(body.accountHost, body.email);
   }
 
   @Public()

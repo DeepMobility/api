@@ -7,6 +7,7 @@ import { GetAllVideosUsecase } from 'src/domain/admin/getAllVideos.usecase';
 import { AddVideoUsecase } from 'src/domain/admin/addVideo.usecase';
 import { RemoveVideoUsecase } from 'src/domain/admin/removeVideo.usecase';
 import { RemoveAccountUsecase } from 'src/domain/admin/removeAccount.usecase';
+import { EditAccountUsecase } from 'src/domain/admin/editAccount.usecase';
 import { GetAccountDetailsUsecase } from 'src/domain/admin/getAccountDetails.usecase';
 import { EditVideoUsecase } from 'src/domain/admin/editVideo.usecase';
 import { GetVideoDetailsUsecase } from 'src/domain/admin/getVideoDetails.usecase';
@@ -33,6 +34,7 @@ export class AdminController {
     private getAllAccountsUsecase: GetAllAccountsUsecase,
     private addAccountUsecase: AddAccountUsecase,
     private removeAccountUsecase: RemoveAccountUsecase,
+    private editAccountUsecase: EditAccountUsecase,
     private getAllVideosUsecase: GetAllVideosUsecase,
     private addVideoUsecase: AddVideoUsecase,
     private getVideoDetailsUsecase: GetVideoDetailsUsecase,
@@ -83,6 +85,15 @@ export class AdminController {
   @Post('remove-account')
   removeAccount(@Body() body: Record<string, any>): Promise<any> {
     return this.removeAccountUsecase.remove(body.accountId)
+  }
+
+  @Admin()
+  @Post('save-account-settings')
+  saveAccountSettings(@Body() body: Record<string, any>): Promise<any> {
+    return this.editAccountUsecase.edit(
+      body.accountId,
+      body.allowedDomains
+    );
   }
 
   @Admin()

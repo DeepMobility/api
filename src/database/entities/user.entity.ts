@@ -72,6 +72,9 @@ export class User {
   @Column({ name: 'is_admin', default: false })
   isAdmin: boolean;
 
+  @Column({ name: 'confirmed_at', nullable: true })
+  confirmedAt: Date;
+
   @CreateDateColumn({ type: 'timestamptz' })
   readonly createdAt: Date;
 }

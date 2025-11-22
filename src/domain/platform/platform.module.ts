@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SharedModule } from '../shared/shared.module';
 import { Account } from '../../database/entities/account.entity';
 import { Challenge } from '../../database/entities/challenge.entity';
 import { User } from '../../database/entities/user.entity';
 import { Video } from '../../database/entities/video.entity';
 import { LoginUsecase } from './login.usecase';
 import { RegisterUsecase } from './register.usecase';
+import { AutologinUsecase } from './autologin.usecase';
+import { ResendConfirmationUsecase } from './resendConfirmation.usecase';
 import { UpdateMyJobTypeUsecase } from './updateMyJobType.usecase';
 import { UpdateMyOtherThematicInterests } from './updateMyOtherThematicInterests.usecase';
 import { UpdateMyPainfulBodyParts } from './updateMyPainfulBodyParts.usecase';
@@ -21,11 +24,16 @@ import { UpdateMyReminderTimeUsecase } from './updateMyReminderTime.usecase';
 import { GetMyReminderTimeUsecase } from './getMyReminderTime.usecase';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Account, User, Video, Session, Challenge])],
+  imports: [
+    TypeOrmModule.forFeature([Account, User, Video, Session, Challenge]),
+    SharedModule,
+  ],
   providers: [
     GetAccountLogoUrlUsecase,
     LoginUsecase,
     RegisterUsecase,
+    AutologinUsecase,
+    ResendConfirmationUsecase,
     ResetPasswordUsecase,
     NewPasswordUsecase,
     UpdateMyJobTypeUsecase,
@@ -42,6 +50,8 @@ import { GetMyReminderTimeUsecase } from './getMyReminderTime.usecase';
     GetAccountLogoUrlUsecase,
     LoginUsecase,
     RegisterUsecase,
+    AutologinUsecase,
+    ResendConfirmationUsecase,
     ResetPasswordUsecase,
     NewPasswordUsecase,
     UpdateMyJobTypeUsecase,
