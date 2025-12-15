@@ -12,6 +12,7 @@ import { GetAllVideosUsecase } from './getAllVideos.usecase';
 import { AddVideoUsecase } from './addVideo.usecase';
 import { RemoveVideoUsecase } from './removeVideo.usecase';
 import { RemoveAccountUsecase } from './removeAccount.usecase';
+import { EditAccountUsecase } from './editAccount.usecase';
 import { GetAccountDetailsUsecase } from './getAccountDetails.usecase';
 import { EditVideoUsecase } from './editVideo.usecase';
 import { GetVideoDetailsUsecase } from './getVideoDetails.usecase';
@@ -37,6 +38,7 @@ import { RemoveTeamUsecase } from './removeTeam.usecase';
     LoginUsecase,
     AddAccountUsecase,
     RemoveAccountUsecase,
+    EditAccountUsecase,
     GetAllAccountsUsecase,
     GetAllVideosUsecase,
     AddVideoUsecase,
@@ -64,6 +66,7 @@ import { RemoveTeamUsecase } from './removeTeam.usecase';
     LoginUsecase,
     AddAccountUsecase,
     RemoveAccountUsecase,
+    EditAccountUsecase,
     GetAllAccountsUsecase,
     GetAllVideosUsecase,
     AddVideoUsecase,

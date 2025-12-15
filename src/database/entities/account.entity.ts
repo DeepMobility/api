@@ -24,6 +24,9 @@ export class Account {
   @Column({ nullable: true })
   logoUrl: string;
 
+  @Column("text", { array: true, default: [], name: 'allowed_domains' })
+  allowedDomains: string[];
+
   @OneToMany(() => User, (user) => user.account)
   users: User[];
 

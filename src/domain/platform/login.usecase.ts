@@ -36,6 +36,10 @@ export class LoginUsecase {
       throw new ForbiddenException();
     }
 
+    if (!user.confirmedAt) {
+      throw new ForbiddenException('email_not_confirmed');
+    }
+
     const jwt = await this.jwtService.signAsync({ id: user.id }, { secret: process.env.JWT_SECRET });
 
     return {
