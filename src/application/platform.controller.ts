@@ -16,6 +16,8 @@ import { NewPasswordUsecase } from 'src/domain/platform/newPassword.usecase';
 import { AnswerSurveyUsecase } from 'src/domain/platform/answerSurvey.usecase';
 import { UpdateMyReminderTimeUsecase } from 'src/domain/platform/updateMyReminderTime.usecase';
 import { GetMyReminderTimeUsecase } from 'src/domain/platform/getMyReminderTime.usecase';
+import { ValidateInvitationUsecase } from 'src/domain/platform/validateInvitation.usecase';
+import { CompleteInvitationUsecase } from 'src/domain/platform/completeInvitation.usecase';
 
 @Controller('platform')
 export class PlatformController {
@@ -36,6 +38,8 @@ export class PlatformController {
     private answerSurveyUsecase: AnswerSurveyUsecase,
     private updateMyReminderTimeUsecase: UpdateMyReminderTimeUsecase,
     private getMyReminderTimeUsecase: GetMyReminderTimeUsecase,
+    private validateInvitationUsecase: ValidateInvitationUsecase,
+    private completeInvitationUsecase: CompleteInvitationUsecase,
   ) {}
 
   @Public()
@@ -174,5 +178,24 @@ export class PlatformController {
   @Get('get-my-reminder-time')
   getMyReminderTime(@Request() request: any): Promise<any> {
     return this.getMyReminderTimeUsecase.get(request.user.id);
+  }
+
+  @Public()
+  @Post('validate-invitation')
+  validateInvitation(@Body() body: Record<string, any>): Promise<any> {
+    return this.validateInvitationUsecase.validate(body.token);
+  }
+
+  @Public()
+  @Post('complete-invitation')
+  completeInvitation(@Body() body: Record<string, any>): Promise<any> {
+    return this.completeInvitationUsecase.complete(
+      body.token,
+      body.password,
+      body.firstName,
+      body.lastName,
+      body.gender,
+      body.birthYear,
+    );
   }
 }

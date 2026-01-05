@@ -12,11 +12,16 @@ import { GetTeamStatsUsecase } from './getTeamStats.usecase';
 import { GetWellbeingStatsUsecase } from './getWellbeingStats.usecase';
 import { ChangePasswordUsecase } from './changePassword.usecase';
 import { GetAccountLogoUrlUsecase } from '../platform/getAccountLogoUrl.usecase';
+import { InviteUsersUsecase } from './inviteUsers.usecase';
+import { GetUsersUsecase } from './getUsers.usecase';
+import { DeleteUsersUsecase } from './deleteUsers.usecase';
+import { SharedModule } from '../shared/shared.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, Session, Video, Team, Account]),
     JwtModule.register({}),
+    SharedModule,
   ],
   providers: [
     LoginUsecase,
@@ -25,6 +30,9 @@ import { GetAccountLogoUrlUsecase } from '../platform/getAccountLogoUrl.usecase'
     GetWellbeingStatsUsecase,
     ChangePasswordUsecase,
     GetAccountLogoUrlUsecase,
+    InviteUsersUsecase,
+    GetUsersUsecase,
+    DeleteUsersUsecase,
   ],
   exports: [
     LoginUsecase,
@@ -33,6 +41,9 @@ import { GetAccountLogoUrlUsecase } from '../platform/getAccountLogoUrl.usecase'
     GetWellbeingStatsUsecase,
     ChangePasswordUsecase,
     GetAccountLogoUrlUsecase,
+    InviteUsersUsecase,
+    GetUsersUsecase,
+    DeleteUsersUsecase,
   ],
 })
 export class DashboardModule {}
