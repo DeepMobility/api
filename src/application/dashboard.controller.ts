@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Delete,
   Query,
   Req,
   Param,
@@ -15,6 +16,9 @@ import { GetTeamStatsUsecase } from '../domain/dashboard/getTeamStats.usecase';
 import { GetWellbeingStatsUsecase } from '../domain/dashboard/getWellbeingStats.usecase';
 import { ChangePasswordUsecase } from '../domain/dashboard/changePassword.usecase';
 import { GetAccountLogoUrlUsecase } from '../domain/platform/getAccountLogoUrl.usecase';
+import { InviteUsersUsecase } from '../domain/dashboard/inviteUsers.usecase';
+import { GetUsersUsecase } from '../domain/dashboard/getUsers.usecase';
+import { DeleteUsersUsecase } from '../domain/dashboard/deleteUsers.usecase';
 
 @Controller('dashboard')
 export class DashboardController {
@@ -25,6 +29,9 @@ export class DashboardController {
     private getWellbeingStatsUsecase: GetWellbeingStatsUsecase,
     private changePasswordUsecase: ChangePasswordUsecase,
     private getAccountLogoUrlUsecase: GetAccountLogoUrlUsecase,
+    private inviteUsersUsecase: InviteUsersUsecase,
+    private getUsersUsecase: GetUsersUsecase,
+    private deleteUsersUsecase: DeleteUsersUsecase,
   ) {}
 
   @Public()
@@ -101,6 +108,45 @@ export class DashboardController {
     );
 
     return { success: true };
+  }
+
+  @Get('users')
+  async getUsers(@Req() request: any) {
+    const user = request.user;
+    
+    if (!user?.accountId || !user?.isDashboard) {
+      throw new UnauthorizedException();
+    }
+
+    return this.getUsersUsecase.execute(user.accountId);
+  }
+
+  @Post('invite-users')
+  async inviteUsers(
+    @Req() request: any,
+    @Body() body: { emails: string[] }
+  ) {
+    const user = request.user;
+    
+    if (!user?.accountId || !user?.isDashboard) {
+      throw new UnauthorizedException();
+    }
+
+    return this.inviteUsersUsecase.execute(user.accountId, body.emails);
+  }
+
+  @Delete('users')
+  async deleteUsers(
+    @Req() request: any,
+    @Body() body: { userIds: string[] }
+  ) {
+    const user = request.user;
+    
+    if (!user?.accountId || !user?.isDashboard) {
+      throw new UnauthorizedException();
+    }
+
+    return this.deleteUsersUsecase.execute(user.accountId, body.userIds);
   }
 }
 

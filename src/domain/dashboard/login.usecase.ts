@@ -20,7 +20,7 @@ export class LoginUsecase {
       relations: { account: true },
       where: {
         email,
-        account: { host: actualAccountHost }
+        account: { host: 'localhost:3001' }
       },
     })
 

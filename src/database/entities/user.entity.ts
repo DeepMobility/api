@@ -75,6 +75,12 @@ export class User {
   @Column({ name: 'confirmed_at', nullable: true })
   confirmedAt: Date;
 
+  @Column({ name: 'invited_at', nullable: true })
+  invitedAt: Date;
+
+  @Column({ name: 'deleted_at', nullable: true })
+  deletedAt: Date;
+
   @CreateDateColumn({ type: 'timestamptz' })
   readonly createdAt: Date;
 }

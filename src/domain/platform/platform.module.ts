@@ -22,10 +22,14 @@ import { NewPasswordUsecase } from './newPassword.usecase';
 import { AnswerSurveyUsecase } from './answerSurvey.usecase';
 import { UpdateMyReminderTimeUsecase } from './updateMyReminderTime.usecase';
 import { GetMyReminderTimeUsecase } from './getMyReminderTime.usecase';
+import { ValidateInvitationUsecase } from './validateInvitation.usecase';
+import { CompleteInvitationUsecase } from './completeInvitation.usecase';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Account, User, Video, Session, Challenge]),
+    JwtModule.register({}),
     SharedModule,
   ],
   providers: [
@@ -45,6 +49,8 @@ import { GetMyReminderTimeUsecase } from './getMyReminderTime.usecase';
     AnswerSurveyUsecase,
     UpdateMyReminderTimeUsecase,
     GetMyReminderTimeUsecase,
+    ValidateInvitationUsecase,
+    CompleteInvitationUsecase,
   ],
   exports: [
     GetAccountLogoUrlUsecase,
@@ -63,6 +69,8 @@ import { GetMyReminderTimeUsecase } from './getMyReminderTime.usecase';
     AnswerSurveyUsecase,
     UpdateMyReminderTimeUsecase,
     GetMyReminderTimeUsecase,
+    ValidateInvitationUsecase,
+    CompleteInvitationUsecase,
   ]
 })
 export class PlatformModule {}
