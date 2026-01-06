@@ -101,6 +101,7 @@ export class GetAccountDetailsUsecase {
     return {
       id: account.id,
       name: account.name,
+      host: account.host,
       usersCount: account.users.length,
       activeUsersCount: activeUsers.length,
       totalTimeWatched,
