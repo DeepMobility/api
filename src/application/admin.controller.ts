@@ -92,7 +92,8 @@ export class AdminController {
   saveAccountSettings(@Body() body: Record<string, any>): Promise<any> {
     return this.editAccountUsecase.edit(
       body.accountId,
-      body.allowedDomains
+      body.allowedDomains,
+      body.configuration
     );
   }
 

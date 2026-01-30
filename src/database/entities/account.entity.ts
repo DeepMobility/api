@@ -7,6 +7,12 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { Team } from './team.entity';
+
+export interface AccountConfiguration {
+  webinarsEnabled?: boolean;
+  // Add more configuration options here as needed
+}
+
 @Entity()
 export class Account {
   @PrimaryGeneratedColumn("uuid")
@@ -26,6 +32,9 @@ export class Account {
 
   @Column("text", { array: true, default: [], name: 'allowed_domains' })
   allowedDomains: string[];
+
+  @Column({ type: 'jsonb', default: {}, name: 'configuration' })
+  configuration: AccountConfiguration;
 
   @OneToMany(() => User, (user) => user.account)
   users: User[];

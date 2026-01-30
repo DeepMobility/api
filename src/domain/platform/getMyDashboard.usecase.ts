@@ -5,7 +5,17 @@ import { User } from '../../database/entities/user.entity';
 import { Video } from '../../database/entities/video.entity';
 import { Session } from 'src/database/entities/session.entity';
 import { Challenge } from 'src/database/entities/challenge.entity';
+import { Webinar } from 'src/database/entities/webinar.entity';
 import { ChallengeStatus } from 'src/database/enums/ChallengeStatus';
+
+export interface ActiveWebinar {
+  id: string;
+  title: string;
+  scheduledAt: Date;
+  teamsLink: string;
+  registrationLink: string | null;
+  status: 'upcoming' | 'ongoing' | 'soon';
+}
 
 @Injectable()
 export class GetMyDashboardUsecase {
@@ -15,7 +25,9 @@ export class GetMyDashboardUsecase {
     @InjectRepository(Video)
     private videosRepository: Repository<Video>,
     @InjectRepository(Challenge)
-    private challengesRepository: Repository<Challenge>
+    private challengesRepository: Repository<Challenge>,
+    @InjectRepository(Webinar)
+    private webinarRepository: Repository<Webinar>,
   ) {}
 
   async get(
@@ -23,7 +35,7 @@ export class GetMyDashboardUsecase {
   ): Promise<any> {
     const user = await this.usersRepository.findOne({
       relations: { sessions: { video: true}, account: true },
-      where: { id: userId },
+      where: { id: "f5e8e2cf-7811-48cc-bb68-346f516d0842" },
     });
 
     if (!user) {
@@ -166,6 +178,48 @@ export class GetMyDashboardUsecase {
       challengeProgress.currentUserTeamInfo = currentUserTeamInfo;
     }
 
+    // Check if webinars are enabled and get active webinar
+    let activeWebinar: ActiveWebinar | null = null;
+    
+    if (user.account.configuration?.webinarsEnabled) {
+      const now = new Date();
+      const twoHoursAgo = new Date(now.getTime() - 2 * 60 * 60 * 1000);
+      
+      const webinar = await this.webinarRepository.findOne({
+        where: {
+          accountId: user.account.id,
+          isActive: true,
+          //scheduledAt: MoreThan(twoHoursAgo),
+        },
+        order: { scheduledAt: 'ASC' },
+      });
+
+      if (webinar) {
+        const scheduledTime = new Date(webinar.scheduledAt).getTime();
+        const nowTime = now.getTime();
+        const diffMinutes = (scheduledTime - nowTime) / (1000 * 60);
+
+        let status: 'upcoming' | 'ongoing' | 'soon';
+        
+        if (diffMinutes <= 0) {
+          status = 'ongoing';
+        } else if (diffMinutes <= 30) {
+          status = 'soon';
+        } else {
+          status = 'upcoming';
+        }
+
+        activeWebinar = {
+          id: webinar.id,
+          title: webinar.title,
+          scheduledAt: webinar.scheduledAt,
+          teamsLink: webinar.teamsLink,
+          registrationLink: webinar.registrationLink,
+          status,
+        };
+      }
+    }
+
     return {
       name: user.firstName,
       isSurveyDue,
@@ -185,7 +239,8 @@ export class GetMyDashboardUsecase {
           ...currentChallenge,
           progress: challengeProgress
         }
-      })
+      }),
+      ...(activeWebinar && { activeWebinar })
     };
   }
 }

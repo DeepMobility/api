@@ -22,5 +22,12 @@ export const emailTranslations = {
     validityNote: 'Ce lien est valable pendant 7 jours.',
     benefits: 'Avec DeepMobility, accédez à des exercices personnalisés pour améliorer votre mobilité et votre bien-être au quotidien.',
   },
+  webinarReminder: {
+    greeting: 'Rappel : Webinaire à venir !',
+    intro: 'Un webinaire est prévu prochainement. Ne manquez pas cette occasion de participer !',
+    instruction: 'Cliquez sur le bouton ci-dessous pour rejoindre le webinaire le jour J.',
+    buttonText: 'Accéder au webinaire',
+    note: 'Ce lien vous permettra de rejoindre le webinaire au moment prévu.',
+  },
 };
 

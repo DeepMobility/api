@@ -109,7 +109,8 @@ export class GetAccountDetailsUsecase {
       mostWatchedVideos,
       averageHour,
       ratings,
-      allowedDomains: account.allowedDomains
+      allowedDomains: account.allowedDomains,
+      configuration: account.configuration || {}
     };
   }
 }
