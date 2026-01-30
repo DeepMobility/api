@@ -1,4 +1,5 @@
-import { Request, Body, Controller, Get, Post, Param } from '@nestjs/common';
+import { Request, Body, Controller, Get, Post, Param, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { Public } from './auth.decorator';
 import { LoginUsecase } from '../domain/platform/login.usecase';
 import { RegisterUsecase } from '../domain/platform/register.usecase';
@@ -18,6 +19,7 @@ import { UpdateMyReminderTimeUsecase } from 'src/domain/platform/updateMyReminde
 import { GetMyReminderTimeUsecase } from 'src/domain/platform/getMyReminderTime.usecase';
 import { ValidateInvitationUsecase } from 'src/domain/platform/validateInvitation.usecase';
 import { CompleteInvitationUsecase } from 'src/domain/platform/completeInvitation.usecase';
+import { GenerateCalendarFileUsecase } from 'src/domain/platform/generateCalendarFile.usecase';
 
 @Controller('platform')
 export class PlatformController {
@@ -40,6 +42,7 @@ export class PlatformController {
     private getMyReminderTimeUsecase: GetMyReminderTimeUsecase,
     private validateInvitationUsecase: ValidateInvitationUsecase,
     private completeInvitationUsecase: CompleteInvitationUsecase,
+    private generateCalendarFileUsecase: GenerateCalendarFileUsecase,
   ) {}
 
   @Public()
@@ -197,5 +200,19 @@ export class PlatformController {
       body.gender,
       body.birthYear,
     );
+  }
+
+  @Public()
+  @Get('calendar/:userId.ics')
+  async getCalendarFile(
+    @Param('userId') userId: string,
+    @Res() res: Response,
+  ): Promise<void> {
+    const icsContent = await this.generateCalendarFileUsecase.generate(userId);
+
+    res.setHeader('Content-Type', 'text/calendar; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename="rappel-deepmobility.ics"`);
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.send(icsContent);
   }
 }
