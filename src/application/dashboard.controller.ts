@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Delete,
   Query,
   Req,
@@ -19,6 +20,12 @@ import { GetAccountLogoUrlUsecase } from '../domain/platform/getAccountLogoUrl.u
 import { InviteUsersUsecase } from '../domain/dashboard/inviteUsers.usecase';
 import { GetUsersUsecase } from '../domain/dashboard/getUsers.usecase';
 import { DeleteUsersUsecase } from '../domain/dashboard/deleteUsers.usecase';
+import { AddWebinarUsecase } from '../domain/dashboard/addWebinar.usecase';
+import { GetWebinarsUsecase } from '../domain/dashboard/getWebinars.usecase';
+import { DeleteWebinarUsecase } from '../domain/dashboard/deleteWebinar.usecase';
+import { UpdateWebinarUsecase } from '../domain/dashboard/updateWebinar.usecase';
+import { GetAccountDetailsUsecase } from '../domain/dashboard/getAccountDetails.usecase';
+import { SendWebinarReminderUsecase } from '../domain/dashboard/sendWebinarReminder.usecase';
 
 @Controller('dashboard')
 export class DashboardController {
@@ -32,6 +39,12 @@ export class DashboardController {
     private inviteUsersUsecase: InviteUsersUsecase,
     private getUsersUsecase: GetUsersUsecase,
     private deleteUsersUsecase: DeleteUsersUsecase,
+    private addWebinarUsecase: AddWebinarUsecase,
+    private getWebinarsUsecase: GetWebinarsUsecase,
+    private deleteWebinarUsecase: DeleteWebinarUsecase,
+    private updateWebinarUsecase: UpdateWebinarUsecase,
+    private getAccountDetailsUsecase: GetAccountDetailsUsecase,
+    private sendWebinarReminderUsecase: SendWebinarReminderUsecase,
   ) {}
 
   @Public()
@@ -147,6 +160,106 @@ export class DashboardController {
     }
 
     return this.deleteUsersUsecase.execute(user.accountId, body.userIds);
+  }
+
+  @Get('webinars')
+  async getWebinars(@Req() request: any) {
+    const user = request.user;
+    
+    if (!user?.accountId || !user?.isDashboard) {
+      throw new UnauthorizedException();
+    }
+
+    return this.getWebinarsUsecase.execute(user.accountId);
+  }
+
+  @Post('webinars')
+  async addWebinar(
+    @Req() request: any,
+    @Body() body: { 
+      title: string; 
+      scheduledAt: string; 
+      teamsLink: string; 
+      registrationLink?: string;
+    }
+  ) {
+    const user = request.user;
+    
+    if (!user?.accountId || !user?.isDashboard) {
+      throw new UnauthorizedException();
+    }
+
+    return this.addWebinarUsecase.execute(
+      user.accountId,
+      body.title,
+      new Date(body.scheduledAt),
+      body.teamsLink,
+      body.registrationLink
+    );
+  }
+
+  @Delete('webinars/:id')
+  async deleteWebinar(
+    @Req() request: any,
+    @Param('id') webinarId: string
+  ) {
+    const user = request.user;
+    
+    if (!user?.accountId || !user?.isDashboard) {
+      throw new UnauthorizedException();
+    }
+
+    await this.deleteWebinarUsecase.execute(user.accountId, webinarId);
+    return { success: true };
+  }
+
+  @Put('webinars/:id')
+  async updateWebinar(
+    @Req() request: any,
+    @Param('id') webinarId: string,
+    @Body() body: {
+      title?: string;
+      scheduledAt?: string;
+      teamsLink?: string;
+      registrationLink?: string | null;
+      isActive?: boolean;
+    }
+  ) {
+    const user = request.user;
+    
+    if (!user?.accountId || !user?.isDashboard) {
+      throw new UnauthorizedException();
+    }
+
+    return this.updateWebinarUsecase.execute(user.accountId, webinarId, {
+      ...body,
+      scheduledAt: body.scheduledAt ? new Date(body.scheduledAt) : undefined,
+    });
+  }
+
+  @Get('account-details')
+  async getAccountDetails(@Req() request: any) {
+    const user = request.user;
+    
+    if (!user?.accountId || !user?.isDashboard) {
+      throw new UnauthorizedException();
+    }
+
+    return this.getAccountDetailsUsecase.execute(user.accountId);
+  }
+
+  @Post('webinars/:id/send-reminder')
+  async sendWebinarReminder(
+    @Req() request: any,
+    @Param('id') webinarId: string
+  ) {
+    const user = request.user;
+    
+    if (!user?.accountId || !user?.isDashboard) {
+      throw new UnauthorizedException();
+    }
+
+    return this.sendWebinarReminderUsecase.execute(user.accountId, webinarId);
   }
 }
 

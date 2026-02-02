@@ -5,6 +5,7 @@ import { Account } from '../../database/entities/account.entity';
 import { Challenge } from '../../database/entities/challenge.entity';
 import { User } from '../../database/entities/user.entity';
 import { Video } from '../../database/entities/video.entity';
+import { Webinar } from '../../database/entities/webinar.entity';
 import { LoginUsecase } from './login.usecase';
 import { RegisterUsecase } from './register.usecase';
 import { AutologinUsecase } from './autologin.usecase';
@@ -29,7 +30,7 @@ import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Account, User, Video, Session, Challenge]),
+    TypeOrmModule.forFeature([Account, User, Video, Session, Challenge, Webinar]),
     JwtModule.register({}),
     SharedModule,
   ],
