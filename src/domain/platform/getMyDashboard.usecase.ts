@@ -35,7 +35,7 @@ export class GetMyDashboardUsecase {
   ): Promise<any> {
     const user = await this.usersRepository.findOne({
       relations: { sessions: { video: true}, account: true },
-      where: { id: "f5e8e2cf-7811-48cc-bb68-346f516d0842" },
+      where: { id: userId },
     });
 
     if (!user) {
