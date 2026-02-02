@@ -20,7 +20,6 @@ import { AddWebinarUsecase } from './addWebinar.usecase';
 import { GetWebinarsUsecase } from './getWebinars.usecase';
 import { DeleteWebinarUsecase } from './deleteWebinar.usecase';
 import { UpdateWebinarUsecase } from './updateWebinar.usecase';
-import { GetAccountDetailsUsecase } from './getAccountDetails.usecase';
 import { SendWebinarReminderUsecase } from './sendWebinarReminder.usecase';
 import { SharedModule } from '../shared/shared.module';
 
@@ -44,7 +43,6 @@ import { SharedModule } from '../shared/shared.module';
     GetWebinarsUsecase,
     DeleteWebinarUsecase,
     UpdateWebinarUsecase,
-    GetAccountDetailsUsecase,
     SendWebinarReminderUsecase,
   ],
   exports: [
@@ -61,7 +59,6 @@ import { SharedModule } from '../shared/shared.module';
     GetWebinarsUsecase,
     DeleteWebinarUsecase,
     UpdateWebinarUsecase,
-    GetAccountDetailsUsecase,
     SendWebinarReminderUsecase,
   ],
 })
