@@ -21,6 +21,7 @@ import { GetWebinarsUsecase } from './getWebinars.usecase';
 import { DeleteWebinarUsecase } from './deleteWebinar.usecase';
 import { UpdateWebinarUsecase } from './updateWebinar.usecase';
 import { SendWebinarReminderUsecase } from './sendWebinarReminder.usecase';
+import { GetAccountUsecase } from './getAccount.usecase';
 import { SharedModule } from '../shared/shared.module';
 
 @Module({
@@ -44,6 +45,7 @@ import { SharedModule } from '../shared/shared.module';
     DeleteWebinarUsecase,
     UpdateWebinarUsecase,
     SendWebinarReminderUsecase,
+    GetAccountUsecase,
   ],
   exports: [
     LoginUsecase,
@@ -60,6 +62,7 @@ import { SharedModule } from '../shared/shared.module';
     DeleteWebinarUsecase,
     UpdateWebinarUsecase,
     SendWebinarReminderUsecase,
+    GetAccountUsecase,
   ],
 })
 export class DashboardModule {}

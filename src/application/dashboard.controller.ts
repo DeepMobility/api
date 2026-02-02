@@ -25,6 +25,7 @@ import { GetWebinarsUsecase } from '../domain/dashboard/getWebinars.usecase';
 import { DeleteWebinarUsecase } from '../domain/dashboard/deleteWebinar.usecase';
 import { UpdateWebinarUsecase } from '../domain/dashboard/updateWebinar.usecase';
 import { SendWebinarReminderUsecase } from '../domain/dashboard/sendWebinarReminder.usecase';
+import { GetAccountUsecase } from '../domain/dashboard/getAccount.usecase';
 
 @Controller('dashboard')
 export class DashboardController {
@@ -43,6 +44,7 @@ export class DashboardController {
     private deleteWebinarUsecase: DeleteWebinarUsecase,
     private updateWebinarUsecase: UpdateWebinarUsecase,
     private sendWebinarReminderUsecase: SendWebinarReminderUsecase,
+    private getAccountUsecase: GetAccountUsecase,
   ) {}
 
   @Public()
@@ -247,6 +249,17 @@ export class DashboardController {
     }
 
     return this.sendWebinarReminderUsecase.execute(user.accountId, webinarId);
+  }
+
+  @Get('get-account')
+  async getAccount(@Req() request: any) {
+    const user = request.user;
+    
+    if (!user?.accountId || !user?.isDashboard) {
+      throw new UnauthorizedException();
+    }
+
+    return this.getAccountUsecase.execute(user.accountId);
   }
 }
 
