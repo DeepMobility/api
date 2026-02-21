@@ -10,7 +10,7 @@ import { Team } from './team.entity';
 
 export interface AccountConfiguration {
   webinarsEnabled?: boolean;
-  // Add more configuration options here as needed
+  onboardingVideoUrl?: string;
 }
 
 @Entity()

@@ -26,6 +26,7 @@ import { GetMyReminderTimeUsecase } from './getMyReminderTime.usecase';
 import { ValidateInvitationUsecase } from './validateInvitation.usecase';
 import { CompleteInvitationUsecase } from './completeInvitation.usecase';
 import { GenerateCalendarFileUsecase } from './generateCalendarFile.usecase';
+import { GetOnboardingVideoUrlUsecase } from './getOnboardingVideoUrl.usecase';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
@@ -54,6 +55,7 @@ import { JwtModule } from '@nestjs/jwt';
     ValidateInvitationUsecase,
     CompleteInvitationUsecase,
     GenerateCalendarFileUsecase,
+    GetOnboardingVideoUrlUsecase,
   ],
   exports: [
     GetAccountLogoUrlUsecase,
@@ -75,6 +77,7 @@ import { JwtModule } from '@nestjs/jwt';
     ValidateInvitationUsecase,
     CompleteInvitationUsecase,
     GenerateCalendarFileUsecase,
+    GetOnboardingVideoUrlUsecase,
   ]
 })
 export class PlatformModule {}
