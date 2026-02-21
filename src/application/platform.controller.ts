@@ -20,6 +20,7 @@ import { GetMyReminderTimeUsecase } from 'src/domain/platform/getMyReminderTime.
 import { ValidateInvitationUsecase } from 'src/domain/platform/validateInvitation.usecase';
 import { CompleteInvitationUsecase } from 'src/domain/platform/completeInvitation.usecase';
 import { GenerateCalendarFileUsecase } from 'src/domain/platform/generateCalendarFile.usecase';
+import { GetOnboardingVideoUrlUsecase } from 'src/domain/platform/getOnboardingVideoUrl.usecase';
 
 @Controller('platform')
 export class PlatformController {
@@ -43,6 +44,7 @@ export class PlatformController {
     private validateInvitationUsecase: ValidateInvitationUsecase,
     private completeInvitationUsecase: CompleteInvitationUsecase,
     private generateCalendarFileUsecase: GenerateCalendarFileUsecase,
+    private getOnboardingVideoUrlUsecase: GetOnboardingVideoUrlUsecase,
   ) {}
 
   @Public()
@@ -131,6 +133,11 @@ export class PlatformController {
   @Get('get-my-dashboard')
   getMyDashboard(@Request() request: any): Promise<any> {
     return this.getMyDashboardUsecase.get(request.user.id);
+  }
+
+  @Get('get-onboarding-video-url')
+  getOnboardingVideoUrl(@Request() request: any): Promise<any> {
+    return this.getOnboardingVideoUrlUsecase.get(request.user.id);
   }
 
   @Post('start-session')

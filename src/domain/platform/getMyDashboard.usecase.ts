@@ -240,7 +240,8 @@ export class GetMyDashboardUsecase {
           progress: challengeProgress
         }
       }),
-      ...(activeWebinar && { activeWebinar })
+      ...(activeWebinar && { activeWebinar }),
+      onboardingVideoUrl: user.account.configuration?.onboardingVideoUrl || null,
     };
   }
 }
