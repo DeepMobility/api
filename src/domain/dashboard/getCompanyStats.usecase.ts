@@ -30,11 +30,11 @@ export class GetCompanyStatsUsecase {
         break;
       case 'month':
         startDate = new Date(now);
-        startDate.setMonth(now.getMonth() - 1);
+        startDate.setDate(now.getDate() - 30);
         break;
       default:
         startDate = new Date(now);
-        startDate.setMonth(now.getMonth() - 1);
+        startDate.setDate(now.getDate() - 30);
     }
 
     const periodSessions = users.flatMap(user => 

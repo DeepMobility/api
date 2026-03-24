@@ -30,11 +30,11 @@ export class GetTeamStatsUsecase {
         break;
       case 'month':
         startDate = new Date(now);
-        startDate.setMonth(now.getMonth() - 1);
+        startDate.setDate(now.getDate() - 30);
         break;
       default:
         startDate = new Date(now);
-        startDate.setMonth(now.getMonth() - 1);
+        startDate.setDate(now.getDate() - 30);
     }
 
     const teamStats = teams.map(team => {

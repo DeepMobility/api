@@ -48,6 +48,7 @@ export class LoginUsecase {
       jobType: user.jobType,
       painfulBodyParts: user.painfulBodyParts,
       otherThematicInterests: user.otherThematicInterests,
+      accountSlug: user.account.slug,
     };
   }
 }
