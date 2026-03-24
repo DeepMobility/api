@@ -16,7 +16,8 @@ export class GetAccountLogoUrlUsecase {
     const account = await this.accountsRepository.findOneBy({ host: accountHost });
 
     return {
-      logoUrl: account.logoUrl
+      logoUrl: account.logoUrl || "",
+      slug: account.slug,
     };
   }
 }

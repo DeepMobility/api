@@ -39,14 +39,15 @@ export class LoginUsecase {
     }
 
     const jwt = await this.jwtService.signAsync(
-      { 
+      {
         id: user.id,
         accountId: user.account.id,
+        accountSlug: user.account.slug,
         isDashboard: true,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-      }, 
+      },
       { secret: process.env.JWT_SECRET }
     );
 
@@ -56,6 +57,7 @@ export class LoginUsecase {
       lastName: user.lastName,
       email: user.email,
       accountId: user.account.id,
+      accountSlug: user.account.slug,
     };
   }
 }

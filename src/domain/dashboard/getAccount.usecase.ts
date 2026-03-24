@@ -6,6 +6,7 @@ import { Account, AccountConfiguration } from '../../database/entities/account.e
 export interface AccountInfo {
   logoUrl: string | null;
   webinarsEnabled: boolean;
+  slug: string | null;
 }
 
 @Injectable()
@@ -25,6 +26,7 @@ export class GetAccountUsecase {
     return {
       logoUrl: account?.logoUrl || null,
       webinarsEnabled: config.webinarsEnabled ?? false,
+      slug: account?.slug || null,
     };
   }
 }
