@@ -54,7 +54,7 @@ export class GetCompanyStatsUsecase {
         return false;
       }
 
-      return lastUserSession.createdAt.toDateString() > lastMonth.toDateString();
+      return lastUserSession.createdAt >= lastMonth;
     });
 
     const activeUsers = activeUsersList.length;
@@ -66,8 +66,8 @@ export class GetCompanyStatsUsecase {
     );
 
     const totalMinutes = periodSessions.reduce((sum, session) => {
-      return sum + (session.video?.duration || 0) / 60;
-    }, 0);
+      return sum + (session.video?.duration || 0);
+    }, 0) / 60;
 
     const averageMinutesPerEmployee = activeUsers > 0 ? totalMinutes / activeUsers : 0;
 
@@ -76,12 +76,12 @@ export class GetCompanyStatsUsecase {
     const allSessions = users.flatMap(user => user.sessions);
 
     const totalTimeWatchedAllTime = allSessions.reduce((totalTime, session) => {
-      return totalTime + session.video.duration;
+      return totalTime + session.video.duration / 60;
     }, 0);
 
-    const lastMonthSessions = allSessions.filter(session => session.createdAt.toDateString() > lastMonth.toDateString());
+    const lastMonthSessions = allSessions.filter(session => session.createdAt >= lastMonth);
     const lastMonthTimeWatched = lastMonthSessions.reduce((totalTime, session) => {
-      return totalTime + session.video.duration;
+      return totalTime + session.video.duration / 60;
     }, 0);
 
     const counts = {};

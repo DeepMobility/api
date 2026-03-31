@@ -41,19 +41,19 @@ export class GetAccountDetailsUsecase {
         return false;
       }
 
-      return lastUserSession.createdAt.toDateString() > lastMonth.toDateString();
+      return lastUserSession.createdAt >= lastMonth;
     })
 
     const accountSessions = account.users.flatMap(user => user.sessions);
 
     const totalTimeWatched = accountSessions.reduce((totalTime, session) => {
-      return totalTime + session.video.duration
+      return totalTime + session.video.duration / 60
     }, 0)
 
-    const lastMonthSessions = accountSessions.filter(session => session.createdAt.toDateString() > lastMonth.toDateString());
+    const lastMonthSessions = accountSessions.filter(session => session.createdAt >= lastMonth);
 
     const lastMonthTimeWatched = lastMonthSessions.reduce((totalTime, session) => {
-      return totalTime + session.video.duration
+      return totalTime + session.video.duration / 60
     }, 0)
 
     const counts = {};
