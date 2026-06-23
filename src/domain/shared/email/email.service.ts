@@ -13,15 +13,20 @@ export interface EmailOptions {
 @Injectable()
 export class EmailService {
   private transporter: nodemailer.Transporter;
+  private from: string;
 
   constructor() {
+    const smtpPort = Number(process.env.SMTP_PORT || 465);
+    const fromEmail = process.env.SMTP_FROM_EMAIL || 'postmaster@deepmobility.com';
+
+    this.from = `"DeepMobility" <${fromEmail}>`;
     this.transporter = nodemailer.createTransport({
-      host: "ssl0.ovh.net",
-      port: 465,
-      secure: true,
+      host: process.env.SMTP_HOST || 'smtp.lettermint.co',
+      port: smtpPort,
+      secure: smtpPort === 465,
       auth: {
-        user: process.env.OVH_EMAIL,
-        pass: process.env.OVH_PASSWORD,
+        user: process.env.SMTP_USER || 'lettermint',
+        pass: process.env.SMTP_PASSWORD,
       },
     });
   }
@@ -52,7 +57,7 @@ export class EmailService {
     });
 
     await this.transporter.sendMail({
-      from: `"DeepMobility" <${process.env.OVH_EMAIL}>`,
+      from: this.from,
       to: options.to,
       subject: options.subject,
       text: textContent,
@@ -60,4 +65,3 @@ export class EmailService {
     });
   }
 }
-
